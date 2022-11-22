@@ -1,7 +1,11 @@
 import React from "react";
+import {AppBar, Button }from "@mui/material"
 
-function NavBar() {
-  return <div>NavBar</div>;
+export default function NavBar() {
+  return 
+<>  
+<Button variant="contained">Contained</Button>
+<Button variant="outlined">Outlined</Button>
+<div> TEST </div>
+</>
 }
-
-export default NavBar;
