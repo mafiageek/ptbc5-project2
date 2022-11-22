@@ -20,6 +20,7 @@ function SubmitRequest() {
           height: 60,
         }}
       />
+      <Typography variant="h4">Submit Request</Typography>
       <Box component="form">
         <Typography>What can I expect after completing this form? </Typography>
         <Typography>
