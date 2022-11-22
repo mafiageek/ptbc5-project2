@@ -1,11 +1,22 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+// import {createMuiTheme, ThemeProvider} from "@material-ui/core"
+import {AppBar, Toolbar, Container, Typography, Button }from "@mui/material"
 import About from "./pages/About";
 import Listings from "./pages/Listings";
 import SubmitRequest from "./pages/SubmitRequest";
 import NavBar from "./components/NavBar.js"
 
-import {AppBar, Toolbar, Container, Typography, Button }from "@mui/material"
+
+// const theme = createMuiTheme({
+// palette: {
+//   primary: {
+//     main: "#8B93FB"
+//   }
+// }
+
+// })
+
 
 function App() {
   return (
