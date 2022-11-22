@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -38,14 +39,28 @@ export default function NavBar() {
     <>
       <AppBar>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            component={Link}
+            to={"/"}
+            variant="h6"
+            sx={{ flexGrow: 1, textDecoration: "none", color: "white" }}
+          >
             MAKING MEANING
           </Typography>
-          <Button variant="text"> About</Button>
 
-          <Button variant="text"> Submit Request</Button>
+          <Button component={Link} to={"/About"} variant="text">
+            {" "}
+            About
+          </Button>
 
-          <Button variant="text">Volunteer Opportunities</Button>
+          <Button component={Link} to={"/SubmitRequest"} variant="text">
+            {" "}
+            Submit Request
+          </Button>
+
+          <Button component={Link} to={"/"} variant="text">
+            Volunteer Opportunities
+          </Button>
 
           {!user?.email ? (
             <Button variant="contained" onClick={handleLogin} color="secondary">

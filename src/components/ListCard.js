@@ -7,7 +7,6 @@ import {
   CardActions,
   Typography,
   Button,
-  Box,
   Stack,
 } from "@mui/material";
 
@@ -21,7 +20,6 @@ import {
 export default function ListCard() {
   return (
     <>
-  
       <Card variant="outlined" sx={{ maxWidth: 345, p: 1, m: 4 }}>
         <CardContent>
           <Stack spacing={1}>
