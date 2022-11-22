@@ -2,8 +2,6 @@ import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
 import {
-  AppBar,
-  Toolbar,
   Card,
   Chip,
   CardContent,
@@ -12,8 +10,6 @@ import {
   Typography,
   Button,
   Box,
-  Grid,
-  Container,
   Stack,
 } from "@mui/material";
 import About from "./pages/About";
@@ -41,6 +37,15 @@ const theme = createTheme({
       main: "#f7d626",
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        textPrimary: {
+          color: "#fff",
+        },
+      },
+    },
+  },
 });
 
 function App() {
@@ -48,30 +53,7 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <AppBar>
-            <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                MAKING MEANING
-              </Typography>
-              <Button variant="text" variant="h5">
-                {" "}
-                About
-              </Button>
-
-              <Button variant="text" variant="h5">
-                {" "}
-                Submit Request
-              </Button>
-
-              <Button variant="text" variant="h5">
-                Volunteer Opportunities
-              </Button>
-
-              <Button variant="contained" color="secondary">
-                Login
-              </Button>
-            </Toolbar>
-          </AppBar>
+          <NavBar />
           <Box
             sx={{
               height: 80,
@@ -122,7 +104,7 @@ function App() {
               <Button variant="contained"> Learn More </Button>
             </CardActions>
           </Card>
-          {/* <NavBar /> */}
+
           <Routes>
             <Route path="/" element={<Listings />} />
             <Route path="/About" element={<About />} />

@@ -4,8 +4,10 @@ import ListCard from "../components/ListCard";
 function Listings() {
   return (
     <div>
+  
+  
       <ListCard />
-      
+  
     </div>
   );
 }

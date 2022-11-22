@@ -6,9 +6,9 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, AppBar, Toolbar } from "@mui/material";
 
-function NavBar() {
+export default function NavBar() {
   const provider = new GoogleAuthProvider();
   const [user, setUser] = useState({});
 
@@ -35,20 +35,32 @@ function NavBar() {
   }, []);
 
   return (
-    <div>
-      NavBar
-      {!user?.email ? (
-        <Button variant="contained" onClick={handleLogin}>
-          Login
-        </Button>
-      ) : (
-        <>
-          <Typography>{user?.displayName}</Typography>
-          <Button variant="contained" onClick={handleLogout}>
-            Logout
-          </Button>
-        </>
-      )}
-    </div>
+    <>
+      <AppBar>
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            MAKING MEANING
+          </Typography>
+          <Button variant="text"> About</Button>
+
+          <Button variant="text"> Submit Request</Button>
+
+          <Button variant="text">Volunteer Opportunities</Button>
+
+          {!user?.email ? (
+            <Button variant="contained" onClick={handleLogin} color="secondary">
+              Login
+            </Button>
+          ) : (
+            <>
+              <Typography>Welcome, {user?.displayName}</Typography>
+              <Button variant="contained" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+    </>
   );
 }
