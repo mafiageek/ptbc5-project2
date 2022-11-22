@@ -10,9 +10,9 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <Routes>
+        <Route path="/" element={<Listings />} />
         <Route path="/About" element={<About />} />
         <Route path="/SubmitRequest" element={<SubmitRequest />} />
-        <Route path="/Listings" element={<Listings />} />
       </Routes>
     </BrowserRouter>
   );
