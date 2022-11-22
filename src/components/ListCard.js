@@ -21,12 +21,7 @@ import {
 export default function ListCard() {
   return (
     <>
-      {" "}
-      <Box
-        sx={{
-          height: 40,
-        }}
-      />
+  
       <Card variant="outlined" sx={{ maxWidth: 345, p: 1, m: 4 }}>
         <CardContent>
           <Stack spacing={1}>

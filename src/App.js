@@ -39,7 +39,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <NavBar />
-        
 
           <Routes>
             <Route path="/" element={<Listings />} />
