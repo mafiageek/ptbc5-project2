@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, AppBar, Toolbar } from "@mui/material";
 
-function NavBar() {
+export default function NavBar() {
   const provider = new GoogleAuthProvider();
   const [user, setUser] = useState({});
 
@@ -35,22 +36,46 @@ function NavBar() {
   }, []);
 
   return (
-    <div>
-      NavBar
-      {!user?.email ? (
-        <Button variant="contained" onClick={handleLogin}>
-          Login
-        </Button>
-      ) : (
-        <>
-          <Typography>{user?.displayName}</Typography>
-          <Button variant="contained" onClick={handleLogout}>
-            Logout
+    <>
+      <AppBar>
+        <Toolbar>
+          <Typography
+            component={Link}
+            to={"/"}
+            variant="h6"
+            sx={{ flexGrow: 1, textDecoration: "none", color: "white" }}
+          >
+            MAKING MEANING
+          </Typography>
+
+          <Button component={Link} to={"/About"} variant="text">
+            {" "}
+            About
           </Button>
-        </>
-      )}
-    </div>
+
+          <Button component={Link} to={"/SubmitRequest"} variant="text">
+            {" "}
+            Submit Request
+          </Button>
+
+          <Button component={Link} to={"/"} variant="text">
+            Volunteer Opportunities
+          </Button>
+
+          {!user?.email ? (
+            <Button variant="contained" onClick={handleLogin} color="secondary">
+              Login
+            </Button>
+          ) : (
+            <>
+              <Typography>Welcome, {user?.displayName}</Typography>
+              <Button variant="contained" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+    </>
   );
 }
-
-export default NavBar;
