@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -10,8 +12,35 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { db } from "../firebase";
 
 function SubmitRequest() {
+  const [formData, setFormData] = useState({
+    about: "",
+    contact: "",
+    email: "",
+    location: "",
+    name: "",
+    project: "",
+    renumeration: "",
+    skills: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    const collectionRef = collection(db, "posts");
+    const docRef = await addDoc(collectionRef, formData);
+    console.log("The new ID is: " + docRef.id);
+  };
+
   return (
     <div>
       {" "}
@@ -32,13 +61,19 @@ function SubmitRequest() {
         <Typography>Information for us to contact you</Typography>
         <TextField
           label="Name"
-          defaultValue="Enter Name"
+          id="name"
+          onChange={handleChange}
+          value={formData.name}
+          // defaultValue="Enter Name"
           size="Normal"
           variant="outlined"
         />
         <TextField
           label="Email"
-          defaultValue="Enter Email"
+          id="email"
+          onChange={handleChange}
+          value={formData.email}
+          // defaultValue="Enter Email"
           size="Normal"
           variant="outlined"
         />
@@ -51,47 +86,68 @@ function SubmitRequest() {
         <Button variant="outlined"> Upload</Button>
         <TextField
           label="Skills Needed"
+          id="skills"
+          onChange={handleChange}
+          value={formData.skills}
           multiline
           rows={4}
-          defaultValue="What skills do you need? e.g. illustration, content creating, video, packaging design"
+          // defaultValue="What skills do you need? e.g. illustration, content creating, video, packaging design"
         />
 
         <TextField
           label="Contact Details"
-          defaultValue="Contact email or link to sign up form for volunteers"
+          id="contact"
+          onChange={handleChange}
+          value={formData.contact}
+          // defaultValue="Contact email or link to sign up form for volunteers"
           size="Normal"
           variant="outlined"
         />
 
         <TextField
           label="About your non-profit/community initiative"
+          id="about"
+          onChange={handleChange}
+          value={formData.about}
           multiline
           rows={4}
-          defaultValue="Tell us more about your organisation"
+          // defaultValue="Tell us more about your organisation"
         />
 
         <TextField
           label="Project Details"
+          id="project"
+          onChange={handleChange}
+          value={formData.project}
           multiline
           rows={4}
-          defaultValue="Tell us more about your project in detail."
+          // defaultValue="Tell us more about your project in detail."
         />
 
         <TextField
           label="Non-profit Location"
-          defaultValue="Enter postal code"
+          id="location"
+          onChange={handleChange}
+          value={formData.location}
+          // defaultValue="Enter postal code"
         />
         <FormControl sx={{ m: 1, minWidth: 160 }}>
-          <InputLabel>Renumeration </InputLabel>
-          <Select>
-            <MenuItem value={10}>Paid</MenuItem>
-            <MenuItem value={20}>Low Bono</MenuItem>
-            <MenuItem value={30}>Pro Bono</MenuItem>
+          <InputLabel id="renumeration">Renumeration </InputLabel>
+          <Select
+            id="renumeration"
+            onChange={handleChange}
+            value={formData.renumeration}
+          >
+            <MenuItem value="Paid">Paid</MenuItem>
+            <MenuItem value="Low Bono">Low Bono</MenuItem>
+            <MenuItem value="Pro Bono">Pro Bono</MenuItem>
           </Select>
         </FormControl>
 
         <Divider />
-        <Button variant="contained">Submit</Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Submit
+        </Button>
       </Box>
     </div>
   );
