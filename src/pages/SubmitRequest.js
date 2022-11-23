@@ -18,6 +18,7 @@ function SubmitRequest() {
   const [formData, setFormData] = useState({
     about: "",
     contact: "",
+    display: false,
     email: "",
     location: "",
     name: "",
