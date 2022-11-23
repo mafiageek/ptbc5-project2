@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { onSnapshot, collection } from "firebase/firestore";
+import { onSnapshot, collection, doc, deleteDoc} from "firebase/firestore";
 import { db } from "../firebase";
 
 import {
@@ -18,10 +18,16 @@ import {
   CalendarMonth,
   LocationOn,
   Storefront,
+  Delete
 } from "@mui/icons-material";
 
 export default function ListCard() {
   const [posts, setPosts] = useState([]);
+
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "posts", id);
+    await deleteDoc(docRef);
+  };
 
   useEffect(
     () =>
@@ -79,7 +85,10 @@ export default function ListCard() {
         </CardContent>
 
         <CardActions>
+          <Stack direction="row" spacing={2}>
           <Button variant="contained"> Learn More </Button>
+          <Delete onClick={() => handleDelete(post.id)}/>
+          </Stack>
         </CardActions>
       </Card>
 ))}
