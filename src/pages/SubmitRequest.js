@@ -12,7 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
+import {
+  getDownloadURL,
+  ref as storageRef,
+  uploadBytes,
+} from "firebase/storage";
 
 function SubmitRequest() {
   const [formData, setFormData] = useState({
@@ -21,11 +26,20 @@ function SubmitRequest() {
     display: false,
     email: "",
     location: "",
+    logoURL: "",
     name: "",
     project: "",
     renumeration: "",
     skills: "",
   });
+
+  const [logo, setLogo] = React.useState(null);
+  const [fileValue, setFileValue] = React.useState("");
+
+  const handleFileChange = (e) => {
+    setFileValue(e.target.value);
+    setLogo(e.target.files[0]);
+  };
 
   const handleChange = (e) => {
     setFormData((prevFormData) => ({
@@ -34,12 +48,21 @@ function SubmitRequest() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    const collectionRef = collection(db, "posts");
-    const docRef = await addDoc(collectionRef, formData);
-    console.log("The new ID is: " + docRef.id);
+
+    const fileRef = storageRef(storage, `logos/${logo.name}`);
+    uploadBytes(fileRef, logo).then(() => {
+      getDownloadURL(fileRef).then((downloadUrl) => {
+        console.log(formData);
+        const collectionRef = collection(db, "posts");
+        const docRef = addDoc(collectionRef, {
+          ...formData,
+          logoURL: downloadUrl,
+        });
+        console.log("The new ID is: " + docRef.id);
+      });
+    });
   };
 
   return (
@@ -57,7 +80,6 @@ function SubmitRequest() {
           We’ll take some time to review the details below, and get in touch if
           we have any questions. You’ll hear from us if the listing is approved!
         </Typography>
-
         <Divider />
         <Typography>Information for us to contact you</Typography>
         <TextField
@@ -83,8 +105,17 @@ function SubmitRequest() {
           Information you would like to post in the online public listing
         </Typography>
 
-        <Typography>Organisation Logo </Typography>
-        <Button variant="outlined"> Upload</Button>
+        {/* <Typography>Organisation Logo </Typography>
+        <Button variant="outlined"> Upload</Button> */}
+        <TextField
+          label="Organization Logo"
+          type="file"
+          id="logo"
+          onChange={handleFileChange}
+          value={fileValue}
+          size="Normal"
+          variant="outlined"
+        />
         <TextField
           label="Skills Needed"
           id="skills"
@@ -94,7 +125,6 @@ function SubmitRequest() {
           rows={4}
           // defaultValue="What skills do you need? e.g. illustration, content creating, video, packaging design"
         />
-
         <TextField
           label="Contact Details"
           id="contact"
@@ -104,7 +134,6 @@ function SubmitRequest() {
           size="Normal"
           variant="outlined"
         />
-
         <TextField
           label="About your non-profit/community initiative"
           id="about"
@@ -114,7 +143,6 @@ function SubmitRequest() {
           rows={4}
           // defaultValue="Tell us more about your organisation"
         />
-
         <TextField
           label="Project Details"
           id="project"
@@ -124,7 +152,6 @@ function SubmitRequest() {
           rows={4}
           // defaultValue="Tell us more about your project in detail."
         />
-
         <TextField
           label="Non-profit Location"
           id="location"
@@ -144,7 +171,6 @@ function SubmitRequest() {
             <MenuItem value="Pro Bono">Pro Bono</MenuItem>
           </Select>
         </FormControl>
-
         <Divider />
         <Button variant="contained" onClick={handleSubmit}>
           Submit

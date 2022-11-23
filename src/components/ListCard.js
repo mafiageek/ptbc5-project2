@@ -52,7 +52,7 @@ export default function ListCard() {
             <CardMedia
               component="img"
               height="120"
-              image="./images/seedful-logo.png"
+              image={post.logoURL}
             />
 
             <Stack direction="row" gap={1}>
