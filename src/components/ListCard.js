@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { onSnapshot, collection, doc, deleteDoc} from "firebase/firestore";
+import { db } from "../firebase";
+
 import {
   Card,
   Chip,
@@ -15,18 +18,41 @@ import {
   CalendarMonth,
   LocationOn,
   Storefront,
+  Delete
 } from "@mui/icons-material";
 
 export default function ListCard() {
+  const [posts, setPosts] = useState([]);
+
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "posts", id);
+    await deleteDoc(docRef);
+  };
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts"), (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setPosts(data);
+        console.log(data);
+      }),
+    []
+  );
+
   return (
+    
     <>
-      <Card variant="outlined" sx={{ maxWidth: 345, p: 1, m: 4 }}>
+    {posts.map((post) => (
+      <Card key={post.id} variant="outlined" sx={{ maxWidth: 345, p: 1, m: 4 }}>
         <CardContent>
           <Stack spacing={1}>
             <CardMedia
               component="img"
               height="120"
-              image="./images/seedful-logo.png"
+              image={post.logoURL}
             />
 
             <Stack direction="row" gap={1}>
@@ -36,7 +62,7 @@ export default function ListCard() {
 
             <Stack direction="row" gap={1}>
               <BusinessCenter />
-              <Typography>Skills Needed</Typography>
+              <Typography>{post.skills}</Typography>
             </Stack>
             <Stack direction="row" gap={1}>
               <CalendarMonth />
@@ -45,26 +71,28 @@ export default function ListCard() {
             </Stack>
             <Stack direction="row" gap={1}>
               <LocationOn />
-              <Typography>Location of non-profit</Typography>
+              <Typography>{post.location}</Typography>
             </Stack>
             <Stack direction="row" gap={1}>
               <Storefront />
-              <Typography>non-profit name</Typography>
+              <Typography>{post.name}</Typography>
             </Stack>
 
             <Typography>
-              Short description of project: mus et iusto odio dignissimos
-              ducimus qui blanditiis praesentium voluptatum deleniti atque
-              corrupti quos dolores et quas molestias excepturi sint
+              {post.project}
             </Typography>
           </Stack>
         </CardContent>
 
         <CardActions>
+          <Stack direction="row" spacing={2}>
           <Button variant="contained"> Learn More </Button>
+          <Delete onClick={() => handleDelete(post.id)}/>
+          </Stack>
         </CardActions>
       </Card>
-      ;
+))}
     </>
+    
   );
 }
