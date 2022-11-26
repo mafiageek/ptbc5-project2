@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { collection, addDoc } from "firebase/firestore";
 import {
   Box,
@@ -26,6 +27,9 @@ function SubmitRequest() {
     display: false,
     email: "",
     location: "",
+    lat: "",
+    lng: "",
+    mapURL: "",
     logoURL: "",
     name: "",
     project: "",
@@ -50,19 +54,67 @@ function SubmitRequest() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const fileRef = storageRef(storage, `logos/${logo.name}`);
-    uploadBytes(fileRef, logo).then(() => {
-      getDownloadURL(fileRef).then((downloadUrl) => {
-        console.log(formData);
-        const collectionRef = collection(db, "posts");
-        addDoc(collectionRef, {
-          ...formData,
-          logoURL: downloadUrl,
+
+    axios
+      .get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
+      )
+      .then((response) => response.data.results[0])
+      .then((geoData) =>
+        axios.get(
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
+      )
+      .then((response) => {
+        console.log(response.config.url);
+        uploadBytes(fileRef, logo).then(() => {
+          getDownloadURL(fileRef).then((downloadUrl) => {
+            console.log(formData);
+            const collectionRef = collection(db, "posts");
+            addDoc(collectionRef, {
+              ...formData,
+              logoURL: downloadUrl,
+              mapURL: response.config.url,
+            });
+          });
         });
       });
-    });
+
+    //working but save to different id
+    // axios
+    //   .get(
+    //     `https://developers.onemap.sg/commonapi/search?searchVal=543272&returnGeom=Y&getAddrDetails=Y`
+    //   )
+    //   .then((response) => response.data.results[0])
+    //   .then((geoData) =>
+    //     axios.get(
+    //       `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=original&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${geoData.POSTAL}&zoom=15&width=256&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+    //     )
+    //   )
+    //   .then((response) => {
+    //     console.log(response.config.url);
+    //     const collectionRef = collection(db, "posts");
+    //     addDoc(collectionRef, {
+    //       ...formData,
+    //       mapURL: response.config.url,
+    //     });
+    //   });
+
+    // uploadBytes(fileRef, logo).then(() => {
+    //   getDownloadURL(fileRef).then((downloadUrl) => {
+    //     console.log(formData);
+    //     const collectionRef = collection(db, "posts");
+    //     addDoc(collectionRef, {
+    //       ...formData,
+    //       logoURL: downloadUrl,
+    //     });
+    //   });
+    // });
+
+    console.log(formData);
   };
+
   return (
     <div>
       {" "}
