@@ -68,7 +68,7 @@ export default function NavBar() {
             </Button>
           ) : (
             <>
-              <Typography>Welcome, {user?.displayName}</Typography>
+              <Typography>{user?.displayName}</Typography>
               <Button
                 variant="contained"
                 color="secondary"
