@@ -9,7 +9,6 @@ import {
   CardMedia,
   CardActions,
   Typography,
-  Button,
   Stack,
   Grid,
 } from "@mui/material";
@@ -87,7 +86,7 @@ export default function ListCard() {
 
               <CardActions>
                 <Stack direction="row" spacing={2}>
-                  <ListingModal post={post}/>
+                  <ListingModal post={post} />
                   <Delete onClick={() => handleDelete(post.id)} />
                 </Stack>
               </CardActions>

@@ -189,8 +189,12 @@ function SubmitRequest() {
                 Information you would like to display in the volunteer
                 opportunities page
               </Typography>
-              <Stack direction={{ xs: "column", sm: "row" }} gap={2}>
-                <Stack direction="column" gap={2}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                sx={{ width: "100%" }}
+                gap={2}
+              >
+                <Stack direction="column" sx={{ width: "100%" }} gap={2}>
                   {/* <Typography>Organisation Logo </Typography>
         <Button variant="outlined"> Upload</Button> */}
                   <TextField
@@ -255,7 +259,7 @@ function SubmitRequest() {
                     // defaultValue="Tell us more about your organisation"
                   />
                 </Stack>
-                <Stack direction="column" gap={2}>
+                <Stack direction="column" sx={{ width: "100%" }} gap={2}>
                   <TextField
                     label="Project Details"
                     fullWidth
