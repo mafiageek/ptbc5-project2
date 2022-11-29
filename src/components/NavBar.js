@@ -69,7 +69,11 @@ export default function NavBar() {
           ) : (
             <>
               <Typography>Welcome, {user?.displayName}</Typography>
-              <Button variant="contained" onClick={handleLogout}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleLogout}
+              >
                 Logout
               </Button>
             </>
