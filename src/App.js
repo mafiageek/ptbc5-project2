@@ -26,12 +26,10 @@ const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: "#FFFCEC",
+          backgroundColor: "#FFFEF8",
         },
       },
     },
-
-    
 
     MuiButton: {
       styleOverrides: {

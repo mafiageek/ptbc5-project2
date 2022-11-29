@@ -68,7 +68,9 @@ export default function NavBar() {
             </Button>
           ) : (
             <>
-              <Typography>{user?.displayName}</Typography>
+              <Typography sx={{ textTransform: "uppercase", pr:2, fontWeight: 'bold' }} style={{color:"#3D45AC"}}>
+                {user?.displayName}
+              </Typography>
               <Button
                 variant="contained"
                 color="secondary"

@@ -9,7 +9,6 @@ import {
   CardMedia,
   CardActions,
   Typography,
-  Button,
   Stack,
   Grid,
 } from "@mui/material";
@@ -21,6 +20,7 @@ import {
   Storefront,
   Delete,
 } from "@mui/icons-material";
+import ListingModal from "./ListingModal";
 
 export default function ListCard() {
   const [posts, setPosts] = useState([]);
@@ -45,7 +45,7 @@ export default function ListCard() {
 
   return (
     <>
-      <Grid container spacing={0} sx={{pl:2}}>
+      <Grid container spacing={0} sx={{ pl: 2 }}>
         {posts.map((post) => (
           <Grid item xs={12} md={6} lg={3}>
             <Card key={post.id} variant="outlined" sx={{ p: 1, m: 2 }}>
@@ -86,7 +86,7 @@ export default function ListCard() {
 
               <CardActions>
                 <Stack direction="row" spacing={2}>
-                  <Button variant="contained"> Learn More </Button>
+                  <ListingModal post={post} />
                   <Delete onClick={() => handleDelete(post.id)} />
                 </Stack>
               </CardActions>
