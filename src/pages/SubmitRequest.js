@@ -35,10 +35,12 @@ function SubmitRequest() {
     lng: "",
     mapURL: "",
     logoURL: "",
-    name: "",
+    organisationName: "",
     project: "",
     remuneration: "",
     skills: "",
+    contactName: "",
+    renumerationDetails: "",
   });
 
   const [logo, setLogo] = React.useState(null);
@@ -159,12 +161,12 @@ function SubmitRequest() {
                 <TextField
                   fullWidth
                   sx={{ m: 1 }}
-                  label="Name"
-                  id="name"
-                  name="name"
+                  label="Contact Name"
+                  id="contact name"
+                  name="contactName"
                   onChange={handleChange}
-                  value={formData.name}
-                  // defaultValue="Enter Name"
+                  //this is needs to be created
+                  value={formData.contactName}
                   size="Normal"
                   variant="outlined"
                 />
@@ -191,6 +193,19 @@ function SubmitRequest() {
                 <Stack direction="column" gap={2}>
                   {/* <Typography>Organisation Logo </Typography>
         <Button variant="outlined"> Upload</Button> */}
+                  <TextField
+                    fullWidth
+                    sx={{ m: 1 }}
+                    label="Organisation Name"
+                    id="organisationName"
+                    name="organisationName"
+                    onChange={handleChange}
+                    value={formData.name}
+                    // defaultValue="Enter Name"
+                    size="Normal"
+                    variant="outlined"
+                  />
+
                   <TextField
                     label=""
                     fullWidth
@@ -271,11 +286,24 @@ function SubmitRequest() {
                       onChange={handleChange}
                       value={formData.remuneration}
                     >
-                      <MenuItem value={"Paid"}>Paid</MenuItem>
+                      <MenuItem value={"Paid"}>Paid Project</MenuItem>
                       <MenuItem value={"Low Bono"}>Low Bono</MenuItem>
                       <MenuItem value={"Pro Bono"}>Pro Bono</MenuItem>
                     </Select>
                   </FormControl>
+
+                  <TextField
+                    label="Remuneration Details"
+                    fullWidth
+                    sx={{ m: 1 }}
+                    id="renumerationDetails"
+                    name="renumerationDetails"
+                    onChange={handleChange}
+                    valugite={formData.renumerationDetails}
+                    multiline
+                    rows={4}
+                    // defaultValue="Tell us more about your project in detail."
+                  />
                 </Stack>
               </Stack>
               <Grid container justifyContent="start">
