@@ -23,6 +23,16 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#FFFCEC",
+        },
+      },
+    },
+
+    
+
     MuiButton: {
       styleOverrides: {
         textPrimary: {

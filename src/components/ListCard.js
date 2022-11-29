@@ -11,6 +11,7 @@ import {
   Typography,
   Button,
   Stack,
+  Grid,
 } from "@mui/material";
 
 import {
@@ -39,56 +40,60 @@ export default function ListCard() {
         setPosts(data);
         console.log(data);
       }),
-    []
+    [],
   );
 
   return (
     <>
-      {posts.map((post) => (
-        <Card
-          key={post.id}
-          variant="outlined"
-          sx={{ maxWidth: 345, p: 1, m: 4 }}
-        >
-          <CardContent>
-            <Stack spacing={1}>
-              <CardMedia component="img" height="120" image={post.logoURL} />
+      <Grid container spacing={0} sx={{pl:2}}>
+        {posts.map((post) => (
+          <Grid item xs={12} md={6} lg={3}>
+            <Card key={post.id} variant="outlined" sx={{ p: 1, m: 2 }}>
+              <CardContent>
+                <Stack spacing={1}>
+                  <CardMedia
+                    component="img"
+                    height="120"
+                    image={post.logoURL}
+                  />
 
-              <Stack direction="row" gap={1}>
-                <Chip label="Paid Project" />
-                <Chip label="Available" />
-              </Stack>
+                  <Stack direction="row" gap={1}>
+                    <Chip label="Paid Project" />
+                    <Chip label="Available" />
+                  </Stack>
 
-              <Stack direction="row" gap={1}>
-                <BusinessCenter />
-                <Typography>{post.skills}</Typography>
-              </Stack>
-              <Stack direction="row" gap={1}>
-                <CalendarMonth />
+                  <Stack direction="row" gap={1}>
+                    <BusinessCenter />
+                    <Typography>{post.skills}</Typography>
+                  </Stack>
+                  <Stack direction="row" gap={1}>
+                    <CalendarMonth />
 
-                <Typography>Date due</Typography>
-              </Stack>
-              <Stack direction="row" gap={1}>
-                <LocationOn />
-                <img src={post.mapURL} alt="location" />
-              </Stack>
-              <Stack direction="row" gap={1}>
-                <Storefront />
-                <Typography>{post.name}</Typography>
-              </Stack>
+                    <Typography>Date due</Typography>
+                  </Stack>
+                  <Stack direction="row" gap={1}>
+                    <LocationOn />
+                    <img src={post.mapURL} alt="location" />
+                  </Stack>
+                  <Stack direction="row" gap={1}>
+                    <Storefront />
+                    <Typography>{post.name}</Typography>
+                  </Stack>
 
-              <Typography>{post.project}</Typography>
-            </Stack>
-          </CardContent>
+                  <Typography>{post.project}</Typography>
+                </Stack>
+              </CardContent>
 
-          <CardActions>
-            <Stack direction="row" spacing={2}>
-              <Button variant="contained"> Learn More </Button>
-              <Delete onClick={() => handleDelete(post.id)} />
-            </Stack>
-          </CardActions>
-        </Card>
-      ))}
+              <CardActions>
+                <Stack direction="row" spacing={2}>
+                  <Button variant="contained"> Learn More </Button>
+                  <Delete onClick={() => handleDelete(post.id)} />
+                </Stack>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 }
