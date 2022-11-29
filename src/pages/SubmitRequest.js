@@ -29,7 +29,7 @@ function SubmitRequest() {
     logoURL: "",
     name: "",
     project: "",
-    renumeration: "",
+    remuneration: "",
     skills: "",
   });
 
@@ -44,7 +44,7 @@ function SubmitRequest() {
   const handleChange = (e) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [e.target.id]: e.target.value,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -56,15 +56,13 @@ function SubmitRequest() {
       getDownloadURL(fileRef).then((downloadUrl) => {
         console.log(formData);
         const collectionRef = collection(db, "posts");
-        const docRef = addDoc(collectionRef, {
+        addDoc(collectionRef, {
           ...formData,
           logoURL: downloadUrl,
         });
-        console.log("The new ID is: " + docRef.id);
       });
     });
   };
-
   return (
     <div>
       {" "}
@@ -85,6 +83,7 @@ function SubmitRequest() {
         <TextField
           label="Name"
           id="name"
+          name="name"
           onChange={handleChange}
           value={formData.name}
           // defaultValue="Enter Name"
@@ -94,6 +93,7 @@ function SubmitRequest() {
         <TextField
           label="Email"
           id="email"
+          name="email"
           onChange={handleChange}
           value={formData.email}
           // defaultValue="Enter Email"
@@ -111,6 +111,7 @@ function SubmitRequest() {
           label="Organization Logo"
           type="file"
           id="logo"
+          name="logo"
           onChange={handleFileChange}
           value={fileValue}
           size="Normal"
@@ -119,6 +120,7 @@ function SubmitRequest() {
         <TextField
           label="Skills Needed"
           id="skills"
+          name="skills"
           onChange={handleChange}
           value={formData.skills}
           multiline
@@ -128,6 +130,7 @@ function SubmitRequest() {
         <TextField
           label="Contact Details"
           id="contact"
+          name="contact"
           onChange={handleChange}
           value={formData.contact}
           // defaultValue="Contact email or link to sign up form for volunteers"
@@ -137,6 +140,7 @@ function SubmitRequest() {
         <TextField
           label="About your non-profit/community initiative"
           id="about"
+          name="about"
           onChange={handleChange}
           value={formData.about}
           multiline
@@ -146,6 +150,7 @@ function SubmitRequest() {
         <TextField
           label="Project Details"
           id="project"
+          name="project"
           onChange={handleChange}
           value={formData.project}
           multiline
@@ -155,20 +160,22 @@ function SubmitRequest() {
         <TextField
           label="Non-profit Location"
           id="location"
+          name="location"
           onChange={handleChange}
           value={formData.location}
           // defaultValue="Enter postal code"
         />
         <FormControl sx={{ m: 1, minWidth: 160 }}>
-          <InputLabel id="renumeration">Renumeration </InputLabel>
+          <InputLabel id="remuneration">Remuneration </InputLabel>
           <Select
-            id="renumeration"
+            id="remuneration"
+            name="remuneration"
             onChange={handleChange}
-            value={formData.renumeration}
+            value={formData.remuneration}
           >
-            <MenuItem value="Paid">Paid</MenuItem>
-            <MenuItem value="Low Bono">Low Bono</MenuItem>
-            <MenuItem value="Pro Bono">Pro Bono</MenuItem>
+            <MenuItem value={"Paid"}>Paid</MenuItem>
+            <MenuItem value={"Low Bono"}>Low Bono</MenuItem>
+            <MenuItem value={"Pro Bono"}>Pro Bono</MenuItem>
           </Select>
         </FormControl>
         <Divider />
