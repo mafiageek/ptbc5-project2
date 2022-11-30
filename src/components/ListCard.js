@@ -40,15 +40,15 @@ export default function ListCard() {
         setPosts(data);
         console.log(data);
       }),
-    [],
+    []
   );
 
   return (
     <>
       <Grid container spacing={0} sx={{ pl: 2 }}>
         {posts.map((post) => (
-          <Grid item xs={12} md={6} lg={3}>
-            <Card key={post.id} variant="outlined" sx={{ p: 1, m: 2 }}>
+          <Grid key={post.id} item xs={12} md={6} lg={3}>
+            <Card variant="outlined" sx={{ p: 1, m: 2 }}>
               <CardContent>
                 <Stack spacing={1}>
                   <CardMedia
@@ -69,7 +69,7 @@ export default function ListCard() {
                   <Stack direction="row" gap={1}>
                     <CalendarMonth />
 
-                    <Typography>Date due</Typography>
+                    <Typography>{post.dueDate}</Typography>
                   </Stack>
                   <Stack direction="row" gap={1}>
                     <LocationOn />

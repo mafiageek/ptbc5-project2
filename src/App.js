@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import About from "./pages/About";
 import Listings from "./pages/Listings";
@@ -45,15 +47,17 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <NavBar />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <BrowserRouter>
+            <NavBar />
 
-          <Routes>
-            <Route path="/" element={<Listings />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/SubmitRequest" element={<SubmitRequest />} />
-          </Routes>
-        </BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Listings />} />
+              <Route path="/About" element={<About />} />
+              <Route path="/SubmitRequest" element={<SubmitRequest />} />
+            </Routes>
+          </BrowserRouter>
+        </LocalizationProvider>
       </ThemeProvider>
     </>
   );
