@@ -9,6 +9,7 @@ import Listings from "./pages/Listings";
 import SubmitRequest from "./pages/SubmitRequest";
 import PrivateRoute from "./components/PrivateRoute";
 import MyListings from "./pages/MyListings";
+import EditListing from "./pages/EditListing";
 import { auth } from "./firebase";
 import {
   GoogleAuthProvider,
@@ -103,6 +104,12 @@ function App() {
                 <Route
                   path="/MyListings"
                   element={<MyListings user={user} />}
+                ></Route>
+              </Route>
+              <Route path="/EditListing" element={<PrivateRoute user={user} />}>
+                <Route
+                  path="/EditListing/:id"
+                  element={<EditListing user={user} />}
                 ></Route>
               </Route>
             </Routes>

@@ -1,5 +1,6 @@
 import React from "react";
 import { doc, deleteDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import {
   Card,
@@ -18,14 +19,21 @@ import {
   LocationOn,
   Storefront,
   Delete,
+  Edit,
 } from "@mui/icons-material";
 import ListingModal from "./ListingModal";
 
 export default function ListCard(props) {
+  const navigate = useNavigate();
+
   const handleDelete = async (id) => {
     const docRef = doc(db, "posts", id);
     await deleteDoc(docRef);
   };
+
+  function handleEdit(listingID) {
+    navigate(`/EditListing/${listingID}`);
+  }
 
   return (
     <>
@@ -73,6 +81,9 @@ export default function ListCard(props) {
                   <ListingModal post={post} />
                   {props.user?.uid === post?.uid && props.user?.uid != null && (
                     <Delete onClick={() => handleDelete(post.id)} />
+                  )}
+                  {props.user?.uid === post?.uid && props.user?.uid != null && (
+                    <Edit onClick={() => handleEdit(post.id)} />
                   )}
                 </Stack>
               </CardActions>
