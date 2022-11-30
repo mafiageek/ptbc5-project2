@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
+import axios from "axios";
 import {
   Box,
   Button,
@@ -66,9 +66,21 @@ function EditListing() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     const docRef = doc(db, "posts", params.id);
-    await updateDoc(docRef, formData);
+
+    axios
+      .get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
+      )
+      .then((response) => response.data.results[0])
+      .then((geoData) =>
+        axios.get(
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
+      )
+      .then((response) => {
+        updateDoc(docRef, { ...formData, mapURL: response.config.url });
+      });
   };
 
   console.log("editlisting data", formData);
