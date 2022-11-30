@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import axios from "axios";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -26,7 +26,7 @@ import {
 } from "firebase/storage";
 import { Container } from "@mui/system";
 
-function SubmitRequest() {
+function SubmitRequest(props) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [formData, setFormData] = useState({
     about: "",
@@ -44,7 +44,9 @@ function SubmitRequest() {
     skills: "",
     contactName: "",
     renumerationDetails: "",
+    timestamp: "",
     dueDate: "",
+    uid: "",
   });
 
   const [logo, setLogo] = React.useState(null);
@@ -86,43 +88,12 @@ function SubmitRequest() {
               logoURL: downloadUrl,
               mapURL: response.config.url,
               dueDate: selectedDate.toDateString(),
+              uid: props.user.uid,
+              timestamp: serverTimestamp(),
             });
           });
         });
       });
-
-    //working but save to different id
-    // axios
-    //   .get(
-    //     `https://developers.onemap.sg/commonapi/search?searchVal=543272&returnGeom=Y&getAddrDetails=Y`
-    //   )
-    //   .then((response) => response.data.results[0])
-    //   .then((geoData) =>
-    //     axios.get(
-    //       `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=original&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${geoData.POSTAL}&zoom=15&width=256&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
-    //     )
-    //   )
-    //   .then((response) => {
-    //     console.log(response.config.url);
-    //     const collectionRef = collection(db, "posts");
-    //     addDoc(collectionRef, {
-    //       ...formData,
-    //       mapURL: response.config.url,
-    //     });
-    //   });
-
-    // uploadBytes(fileRef, logo).then(() => {
-    //   getDownloadURL(fileRef).then((downloadUrl) => {
-    //     console.log(formData);
-    //     const collectionRef = collection(db, "posts");
-    //     addDoc(collectionRef, {
-    //       ...formData,
-    //       logoURL: downloadUrl,
-    //     });
-    //   });
-    // });
-
-    console.log(formData);
   };
 
   return (
