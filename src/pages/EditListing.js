@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { db } from "../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
 import axios from "axios";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -16,18 +17,12 @@ import {
   TextField,
   Typography,
   Stack,
+  Container,
 } from "@mui/material";
-import React from "react";
-import { db, storage } from "../firebase";
-import {
-  getDownloadURL,
-  ref as storageRef,
-  uploadBytes,
-} from "firebase/storage";
-import { Container } from "@mui/system";
 
-function SubmitRequest(props) {
-  const [selectedDate, setSelectedDate] = useState(null);
+function EditListing() {
+  const navigate = useNavigate();
+  const params = useParams();
   const [formData, setFormData] = useState({
     about: "",
     contact: "",
@@ -49,13 +44,18 @@ function SubmitRequest(props) {
     uid: "",
   });
 
-  const [logo, setLogo] = React.useState(null);
-  const [fileValue, setFileValue] = React.useState("");
-
-  const handleFileChange = (e) => {
-    setFileValue(e.target.value);
-    setLogo(e.target.files[0]);
-  };
+  useEffect(() => {
+    async function fetchListing() {
+      const docRef = doc(db, "posts", params.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setFormData({ ...docSnap.data() });
+      } else {
+        navigate("/");
+      }
+    }
+    fetchListing();
+  }, [navigate, params.id]);
 
   const handleChange = (e) => {
     setFormData((prevFormData) => ({
@@ -64,9 +64,10 @@ function SubmitRequest(props) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    const fileRef = storageRef(storage, `logos/${logo.name}`);
+    const docRef = doc(db, "posts", params.id);
+
     axios
       .get(
         `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
@@ -78,24 +79,11 @@ function SubmitRequest(props) {
         )
       )
       .then((response) => {
-        console.log(response.config.url);
-        uploadBytes(fileRef, logo).then(() => {
-          getDownloadURL(fileRef).then((downloadUrl) => {
-            console.log(formData);
-            const collectionRef = collection(db, "posts");
-            addDoc(collectionRef, {
-              ...formData,
-              logoURL: downloadUrl,
-              mapURL: response.config.url,
-              dueDate: selectedDate.toDateString(),
-              uid: props.user.uid,
-              timestamp: serverTimestamp(),
-            });
-          });
-        });
+        updateDoc(docRef, { ...formData, mapURL: response.config.url });
       });
   };
 
+  console.log("editlisting data", formData);
   return (
     <div>
       {" "}
@@ -106,7 +94,7 @@ function SubmitRequest(props) {
       />
       <Container sx={{ p: 2, mt: 2 }}>
         <Typography variant="h4" sx={{ pb: 2 }}>
-          Submit Request
+          Update Listing
         </Typography>
 
         <Box component="form">
@@ -179,24 +167,12 @@ function SubmitRequest(props) {
                     id="organisationName"
                     name="organisationName"
                     onChange={handleChange}
-                    value={formData.name}
+                    value={formData.organisationName}
                     // defaultValue="Enter Name"
                     size="Normal"
                     variant="outlined"
                   />
 
-                  <TextField
-                    label=""
-                    fullWidth
-                    sx={{ m: 1 }}
-                    type="file"
-                    id="logo"
-                    name="logo"
-                    onChange={handleFileChange}
-                    value={fileValue}
-                    size="Normal"
-                    variant="outlined"
-                  />
                   <TextField
                     label="Skills Needed"
                     fullWidth
@@ -278,7 +254,7 @@ function SubmitRequest(props) {
                     id="renumerationDetails"
                     name="renumerationDetails"
                     onChange={handleChange}
-                    valugite={formData.renumerationDetails}
+                    value={formData.renumerationDetails}
                     multiline
                     rows={4}
                     // defaultValue="Tell us more about your project in detail."
@@ -286,9 +262,12 @@ function SubmitRequest(props) {
                   <DesktopDatePicker
                     name="selectedDate"
                     label="Date Picker"
-                    value={selectedDate}
+                    value={formData.dueDate}
                     onChange={(newValue) => {
-                      setSelectedDate(newValue);
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        dueDate: newValue.toDateString(),
+                      }));
                     }}
                     renderInput={(params) => <TextField {...params} />}
                   />
@@ -298,9 +277,9 @@ function SubmitRequest(props) {
                 <Button
                   sx={{ ml: 1, mt: 2 }}
                   variant="contained"
-                  onClick={handleSubmit}
+                  onClick={handleUpdate}
                 >
-                  Submit
+                  Update
                 </Button>
               </Grid>
             </Box>
@@ -311,4 +290,4 @@ function SubmitRequest(props) {
   );
 }
 
-export default SubmitRequest;
+export default EditListing;

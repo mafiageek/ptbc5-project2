@@ -1,40 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { auth } from "../firebase";
+import React from "react";
+
 import { Link } from "react-router-dom";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
+
 import { Button, Typography, AppBar, Toolbar } from "@mui/material";
 
-export default function NavBar() {
-  const provider = new GoogleAuthProvider();
-  const [user, setUser] = useState({});
-
-  const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      console.log("User", currentUser);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
+export default function NavBar(props) {
   return (
     <>
       <AppBar>
@@ -62,19 +32,30 @@ export default function NavBar() {
             Volunteer Opportunities
           </Button>
 
-          {!user?.email ? (
-            <Button variant="contained" onClick={handleLogin} color="secondary">
+          <Button component={Link} to={"/MyListings"} variant="text">
+            My Listings
+          </Button>
+
+          {!props.user?.email ? (
+            <Button
+              variant="contained"
+              onClick={props.handleLogin}
+              color="secondary"
+            >
               Login
             </Button>
           ) : (
             <>
-              <Typography sx={{ textTransform: "uppercase", pr:2, fontWeight: 'bold' }} style={{color:"#3D45AC"}}>
-                {user?.displayName}
+              <Typography
+                sx={{ textTransform: "uppercase", pr: 2, fontWeight: "bold" }}
+                style={{ color: "#3D45AC" }}
+              >
+                {props.user?.displayName}
               </Typography>
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleLogout}
+                onClick={props.handleLogout}
               >
                 Logout
               </Button>
