@@ -58,7 +58,7 @@ export default function ListCard() {
                   />
 
                   <Stack direction="row" gap={1}>
-                    <Chip label="Paid Project" />
+                    <Chip label={post.remuneration} />
                     <Chip label="Available" />
                   </Stack>
 

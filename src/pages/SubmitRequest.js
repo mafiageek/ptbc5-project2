@@ -31,7 +31,7 @@ function SubmitRequest() {
   const [formData, setFormData] = useState({
     about: "",
     contact: "",
-    display: false,
+    isDisplay: false,
     email: "",
     location: "",
     lat: "",
@@ -65,7 +65,6 @@ function SubmitRequest() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const fileRef = storageRef(storage, `logos/${logo.name}`);
-
     axios
       .get(
         `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
@@ -295,7 +294,7 @@ function SubmitRequest() {
                       onChange={handleChange}
                       value={formData.remuneration}
                     >
-                      <MenuItem value={"Paid"}>Paid Project</MenuItem>
+                      <MenuItem value={"Paid Project"}>Paid Project</MenuItem>
                       <MenuItem value={"Low Bono"}>Low Bono</MenuItem>
                       <MenuItem value={"Pro Bono"}>Pro Bono</MenuItem>
                     </Select>
