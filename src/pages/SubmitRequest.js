@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
 import axios from "axios";
 import { collection, addDoc } from "firebase/firestore";
 import {
@@ -25,6 +27,7 @@ import {
 import { Container } from "@mui/system";
 
 function SubmitRequest() {
+  const [selectedDate, setSelectedDate] = useState(null);
   const [formData, setFormData] = useState({
     about: "",
     contact: "",
@@ -41,6 +44,7 @@ function SubmitRequest() {
     skills: "",
     contactName: "",
     renumerationDetails: "",
+    dueDate: "",
   });
 
   const [logo, setLogo] = React.useState(null);
@@ -64,13 +68,13 @@ function SubmitRequest() {
 
     axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
       )
       .then((response) => response.data.results[0])
       .then((geoData) =>
         axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
-        ),
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
       )
       .then((response) => {
         console.log(response.config.url);
@@ -82,6 +86,7 @@ function SubmitRequest() {
               ...formData,
               logoURL: downloadUrl,
               mapURL: response.config.url,
+              dueDate: selectedDate.toDateString(),
             });
           });
         });
@@ -307,6 +312,15 @@ function SubmitRequest() {
                     multiline
                     rows={4}
                     // defaultValue="Tell us more about your project in detail."
+                  />
+                  <DesktopDatePicker
+                    name="selectedDate"
+                    label="Date Picker"
+                    value={selectedDate}
+                    onChange={(newValue) => {
+                      setSelectedDate(newValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
                   />
                 </Stack>
               </Stack>
