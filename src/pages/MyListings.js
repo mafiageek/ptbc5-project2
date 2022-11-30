@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  onSnapshot,
-  collection,
-  // doc,
-  // deleteDoc,
-  // query,
-} from "firebase/firestore";
+import { Box, Typography } from "@mui/material";
+import ListCard from "../components/ListCard";
+import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function MyListings(props) {
   const [posts, setPosts] = useState([]);
-
-  // const handleDelete = async (id) => {
-  //   const docRef = doc(db, "posts", id);
-  //   await deleteDoc(docRef);
-  // };
 
   useEffect(
     () =>
@@ -31,5 +22,17 @@ export default function MyListings(props) {
 
   console.log(posts);
 
-  return <div>MyListings</div>;
+  return (
+    <div>
+      <Box
+        sx={{
+          height: 100,
+        }}
+      />
+      <Box sx={{ pl: 4 }}>
+        <Typography variant="h4">Volunteer Opportunities</Typography>
+      </Box>
+      <ListCard posts={posts} user={props.user} />
+    </div>
+  );
 }

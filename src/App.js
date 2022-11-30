@@ -88,7 +88,7 @@ function App() {
             />
 
             <Routes>
-              <Route path="/" element={<Listings />} />
+              <Route path="/" element={<Listings user={user} />} />
               <Route path="/About" element={<About />} />
               <Route
                 path="/SubmitRequest"
