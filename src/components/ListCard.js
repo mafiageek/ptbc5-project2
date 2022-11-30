@@ -61,7 +61,11 @@ export default function ListCard(props) {
                   <Stack direction="row" gap={1}>
                     <CalendarMonth />
 
-                    <Typography>{post.dueDate}</Typography>
+                    <Typography>
+                      {typeof post.dueDate === Object
+                        ? post.dueDate.toDateString()
+                        : post.dueDate}
+                    </Typography>
                   </Stack>
                   <Stack direction="row" gap={1}>
                     <LocationOn />
