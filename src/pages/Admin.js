@@ -10,7 +10,6 @@ function Admin() {
           ...doc.data(),
           id: doc.id,
         }));
-
         console.log(data);
       }),
     []
