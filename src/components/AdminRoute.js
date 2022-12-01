@@ -7,7 +7,7 @@ function AdminRoute(props) {
     process.env.REACT_APP_ADMIN_AK,
   ];
 
-  return admins.includes(props.user.uid) ? <Outlet /> : <Navigate to="/" />;
+  return admins.includes(props.user?.uid) ? <Outlet /> : <Navigate to="/" />;
 }
 
 export default AdminRoute;
