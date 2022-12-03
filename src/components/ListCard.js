@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { doc, deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
@@ -11,6 +11,8 @@ import {
   Typography,
   Stack,
   Grid,
+  TextField,
+  Box,
 } from "@mui/material";
 
 import {
@@ -24,6 +26,14 @@ import {
 import ListingModal from "./ListingModal";
 
 export default function ListCard(props) {
+  const [query, setQuery] = useState("");
+  const keys = ["skills", "project", "about", "remuneration"];
+  const search = (data) => {
+    return data.filter((item) =>
+      keys.some((key) => item[key].toLowerCase().includes(query))
+    );
+  };
+
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -37,8 +47,25 @@ export default function ListCard(props) {
 
   return (
     <>
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "40ch" },
+          display: "flex",
+          justifyContent: "center",
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="search"
+          label="Search"
+          variant="outlined"
+          onChange={(e) => setQuery(e.target.value.toLowerCase())}
+        />
+      </Box>
       <Grid container spacing={0} sx={{ pl: 2 }}>
-        {props.posts.map((post) => (
+        {search(props.posts).map((post) => (
           <Grid key={post.id} item xs={12} md={6} lg={3}>
             <Card variant="outlined" sx={{ p: 1, m: 2 }}>
               <CardContent>
