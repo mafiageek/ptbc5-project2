@@ -65,8 +65,57 @@ function SubmitRequest(props) {
     }));
   };
 
+  const generateEmailPayload = (
+    receiver1,
+    receiver2,
+    subject,
+    sender,
+    message
+  ) => {
+    const TEMPLATE = {
+      personalizations: [
+        {
+          to: [{ email: receiver1 }, { email: receiver2 }],
+          subject,
+        },
+      ],
+      from: { email: sender },
+      content: [{ type: "text/plain", value: message }],
+    };
+    return JSON.stringify(TEMPLATE);
+  };
+
+  const emailNotify = (receiver1, receiver2) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "9e839adf6cmsh259f3c43f50f1ddp124c07jsnb9b66d33547d",
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        receiver2,
+        `A new request from ${props.user.displayName}`,
+        "no-reply@mail.com",
+        "Review"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const fileRef = storageRef(storage, `logos/${logo.name}`);
     axios
       .get(
@@ -82,7 +131,6 @@ function SubmitRequest(props) {
         console.log(response.config.url);
         uploadBytes(fileRef, logo).then(() => {
           getDownloadURL(fileRef).then((downloadUrl) => {
-            console.log(formData);
             const collectionRef = collection(db, "posts");
             addDoc(collectionRef, {
               ...formData,
@@ -97,26 +145,10 @@ function SubmitRequest(props) {
         });
       });
 
-    const options = {
-      method: "POST",
-      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
-      headers: {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
-        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
-      },
-      data: '{"personalizations":[{"to":[{"email":"anton.kho@gmail.com"}],"subject":"Hello, World!"}],"from":{"email":"from_address@example.com"},"content":[{"type":"text/plain","value":"Hello, World!"}]}',
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    emailNotify("weimankow@gmail.com", "anton.kho@gmail.com");
   };
+
+  console.log(formData);
 
   return (
     <div>
