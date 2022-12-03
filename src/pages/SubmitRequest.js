@@ -39,6 +39,7 @@ function SubmitRequest(props) {
     mapURL: "",
     logoURL: "",
     organisationName: "",
+    projectName: "",
     project: "",
     remuneration: "",
     skills: "",
@@ -69,13 +70,13 @@ function SubmitRequest(props) {
     const fileRef = storageRef(storage, `logos/${logo.name}`);
     axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
       )
       .then((response) => response.data.results[0])
       .then((geoData) =>
         axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
-        )
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
+        ),
       )
       .then((response) => {
         console.log(response.config.url);
@@ -179,7 +180,7 @@ function SubmitRequest(props) {
                     id="organisationName"
                     name="organisationName"
                     onChange={handleChange}
-                    value={formData.name}
+                    value={formData.organisationName}
                     // defaultValue="Enter Name"
                     size="Normal"
                     variant="outlined"
@@ -194,6 +195,19 @@ function SubmitRequest(props) {
                     name="logo"
                     onChange={handleFileChange}
                     value={fileValue}
+                    size="Normal"
+                    variant="outlined"
+                  />
+
+                  <TextField
+                    fullWidth
+                    sx={{ m: 1 }}
+                    label="Project Name"
+                    id="projectnName"
+                    name="projectName"
+                    onChange={handleChange}
+                    value={formData.projectName}
+                    // defaultValue="Enter Name"
                     size="Normal"
                     variant="outlined"
                   />
