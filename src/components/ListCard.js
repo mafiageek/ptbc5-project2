@@ -50,16 +50,18 @@ export default function ListCard(props) {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "40ch" },
+          "& > :not(style)": { p: 0, m: 3, width: "40ch" },
           display: "flex",
           justifyContent: "center",
+          backgroundColor: "#fc8c03",
         }}
         noValidate
         autoComplete="off"
       >
         <TextField
+          sx={{ backgroundColor: "white", border: 0 }}
           id="search"
-          label="Search"
+          label="search"
           variant="outlined"
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
         />
