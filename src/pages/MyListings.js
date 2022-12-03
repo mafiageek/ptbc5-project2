@@ -18,6 +18,7 @@ import { db } from "../firebase";
 
 export default function MyListings(props) {
   const [posts, setPosts] = useState([]);
+  
 
   useEffect(
     () =>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { onSnapshot, collection } from "firebase/firestore";
-import { db } from "../firebase";
+import { onSnapshot, collection, updateDoc, doc } from "firebase/firestore";
 import {
   TableContainer,
   Typography,
@@ -14,9 +13,16 @@ import {
   TableBody,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { db } from "../firebase";
 
 export default function Admin() {
   const [posts, setPosts] = useState([]);
+
+  const handleApprove = (id) => {
+    const docRef = doc(db, "post", id);
+    updateDoc(docRef, { isDisplay: true });
+    console.log();
+  };
 
   useEffect(
     () =>
@@ -49,6 +55,8 @@ export default function Admin() {
               <TableCell>Contact</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Deadline</TableCell>
+              <TableCell>isDisplay</TableCell>
+
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -64,11 +72,13 @@ export default function Admin() {
                 <TableCell>{post.contactName}</TableCell>
                 <TableCell>{post.email}</TableCell>
                 <TableCell>{post.dueDate}</TableCell>
-
+                <TableCell>{`${post.isDisplay}`}</TableCell>
                 <TableCell>
                   <ButtonGroup variant="text" aria-label="text button group">
                     <Button color="secondary">See Details</Button>
-                    <Button color="secondary">Approve</Button>
+                    <Button onClick={handleApprove(post.id)} color="secondary">
+                      Approve
+                    </Button>
                     <Button color="secondary">Edit</Button>
                     <Button color="secondary">Delete</Button>
                   </ButtonGroup>
