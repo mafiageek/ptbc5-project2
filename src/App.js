@@ -3,11 +3,12 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
+import Admin from "./pages/Admin";
 import About from "./pages/About";
 import Listings from "./pages/Listings";
 import SubmitRequest from "./pages/SubmitRequest";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
 import MyListings from "./pages/MyListings";
 import EditListing from "./pages/EditListing";
 import { auth } from "./firebase";
@@ -111,6 +112,9 @@ function App() {
                   path="/EditListing/:id"
                   element={<EditListing user={user} />}
                 ></Route>
+              </Route>
+              <Route path="/Admin" element={<AdminRoute user={user} />}>
+                <Route path="/Admin" element={<Admin user={user} />}></Route>
               </Route>
             </Routes>
           </BrowserRouter>
