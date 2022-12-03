@@ -27,7 +27,7 @@ import {
 import { Container } from "@mui/system";
 
 function SubmitRequest(props) {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [formData, setFormData] = useState({
     about: "",
     contact: "",

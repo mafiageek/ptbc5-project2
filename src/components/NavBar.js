@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { Button, Typography, AppBar, Toolbar } from "@mui/material";
 
 export default function NavBar(props) {
+  const admins = [
+    process.env.REACT_APP_ADMIN_WK,
+    process.env.REACT_APP_ADMIN_AK,
+  ];
   return (
     <>
       <AppBar>
@@ -32,9 +36,17 @@ export default function NavBar(props) {
             Volunteer Opportunities
           </Button>
 
-          <Button component={Link} to={"/MyListings"} variant="text">
-            My Listings
-          </Button>
+          {props.user?.uid && (
+            <Button component={Link} to={"/MyListings"} variant="text">
+              My Listings
+            </Button>
+          )}
+
+          {admins.includes(props.user?.uid) && (
+            <Button component={Link} to={"/Admin"} variant="text">
+              Admin
+            </Button>
+          )}
 
           {!props.user?.email ? (
             <Button
