@@ -13,6 +13,7 @@ env:
   REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
   REACT_APP_ADMIN_WK: ${{ secrets.REACT_APP_ADMIN_WK }}
   REACT_APP_ADMIN_AK: ${{ secrets.REACT_APP_ADMIN_AK }}
+  REACT_APP_SENDGRID_API_KEY: ${{ secrets.REACT_APP_SENDGRID_API_KEY }}
 
 jobs:
   build_and_preview:

@@ -48,6 +48,7 @@ function SubmitRequest(props) {
     timestamp: "",
     dueDate: "",
     uid: "",
+    replyTo: "",
   });
 
   const [logo, setLogo] = React.useState(null);
@@ -65,8 +66,57 @@ function SubmitRequest(props) {
     }));
   };
 
+  const generateEmailPayload = (
+    receiver1,
+    receiver2,
+    subject,
+    sender,
+    message
+  ) => {
+    const TEMPLATE = {
+      personalizations: [
+        {
+          to: [{ email: receiver1 }, { email: receiver2 }],
+          subject,
+        },
+      ],
+      from: { email: sender },
+      content: [{ type: "text/plain", value: message }],
+    };
+    return JSON.stringify(TEMPLATE);
+  };
+
+  const emailNotify = (receiver1, receiver2) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        receiver2,
+        `A new request from ${props.user.displayName}`,
+        "no-reply@mail.com",
+        "Review"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const fileRef = storageRef(storage, `logos/${logo.name}`);
     axios
       .get(
@@ -82,7 +132,6 @@ function SubmitRequest(props) {
         console.log(response.config.url);
         uploadBytes(fileRef, logo).then(() => {
           getDownloadURL(fileRef).then((downloadUrl) => {
-            console.log(formData);
             const collectionRef = collection(db, "posts");
             addDoc(collectionRef, {
               ...formData,
@@ -90,12 +139,17 @@ function SubmitRequest(props) {
               mapURL: response.config.url,
               dueDate: selectedDate.toDateString(),
               uid: props.user.uid,
+              replyTo: props.user.email,
               timestamp: serverTimestamp(),
             });
           });
         });
       });
+
+    emailNotify("weimankow@gmail.com", "anton.kho@gmail.com");
   };
+
+  console.log(formData);
 
   return (
     <div>
