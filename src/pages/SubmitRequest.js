@@ -91,7 +91,7 @@ function SubmitRequest(props) {
       url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "9e839adf6cmsh259f3c43f50f1ddp124c07jsnb9b66d33547d",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
         "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
       },
       data: generateEmailPayload(
