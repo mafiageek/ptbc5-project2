@@ -18,6 +18,11 @@ export default function NavBar(props) {
             MAKING MEANING
           </Typography>
 
+          <Button component={Link} to={"/Dashboard"} variant="text">
+            {" "}
+            Dashboard
+          </Button>
+
           <Button component={Link} to={"/About"} variant="text">
             {" "}
             About
