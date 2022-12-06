@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { onSnapshot, collection } from "firebase/firestore";
-import { db } from "../firebase";
+import React from "react";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
