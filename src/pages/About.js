@@ -1,23 +1,10 @@
 import React, { useEffect } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase";
-import {
-  TableContainer,
-  Typography,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  Button,
-  ButtonGroup,
-  TableBody,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-
 export default function About() {
-  
   return (
     <div>
       <Box
@@ -41,7 +28,6 @@ export default function About() {
         voluptatibus maiores alias consequatur aut perferendis doloribus
         asperiores repellat."
       </Typography>{" "}
-      </div>
-
+    </div>
   );
 }

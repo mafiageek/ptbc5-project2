@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import ListCard from "../components/ListCard";
-import { Container, Stack } from "@mui/system";
+import { Container } from "@mui/system";
 
 export default function Listings(props) {
   const [posts, setPosts] = useState([]);
