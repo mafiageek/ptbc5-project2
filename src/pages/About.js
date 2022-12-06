@@ -1,12 +1,13 @@
-import { Box, Typography } from "@mui/material";
 import React from "react";
+import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
-function About() {
+export default function About() {
   return (
     <div>
       <Box
         sx={{
-          height: 60,
+          height: 100,
         }}
       />
       <Typography variant="h4">About page</Typography>
@@ -28,5 +29,3 @@ function About() {
     </div>
   );
 }
-
-export default About;

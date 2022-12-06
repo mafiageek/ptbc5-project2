@@ -30,7 +30,7 @@ export default function ListCard(props) {
   const keys = ["skills", "project", "about", "remuneration"];
   const search = (data) => {
     return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(query))
+      keys.some((key) => item[key].toLowerCase().includes(query)),
     );
   };
 
@@ -102,10 +102,14 @@ export default function ListCard(props) {
                   </Stack>
                   <Stack direction="row" gap={1}>
                     <Storefront />
-                    <Typography>{post.name}</Typography>
+                    <Typography>{post.organisationName}</Typography>
                   </Stack>
 
-                  <Typography>{post.project}</Typography>
+                  <Typography
+                  // sx={{ maxHeight: 200 }}
+                  >
+                    {post.project}
+                  </Typography>
                 </Stack>
               </CardContent>
 
