@@ -12,13 +12,13 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import ListCard from "../components/ListCard";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase";
+import { Container, Stack } from "@mui/system";
+import ListingModal from "../components/ListingModal";
 
 export default function MyListings(props) {
   const [posts, setPosts] = useState([]);
-  
 
   useEffect(
     () =>
@@ -42,48 +42,57 @@ export default function MyListings(props) {
           height: 100,
         }}
       />
-      <Box sx={{ pl: 4 }}>
-        <Typography variant="h4">My Projects</Typography>
-      </Box>
+      <Container>
+        <Stack spacing={2}>
+      
+            <Typography variant="h4">My Listings</Typography>
+  
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Organisation</TableCell>
+                  <TableCell>Contact</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Deadline</TableCell>
+                  <TableCell>Status</TableCell>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Organisation</TableCell>
-              <TableCell>Contact</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Deadline</TableCell>
-              <TableCell>Status</TableCell>
-
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {posts.map((post) => (
-              <TableRow
-                key={post.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {post.organisationName}
-                </TableCell>
-                <TableCell>{post.contactName}</TableCell>
-                <TableCell>{post.email}</TableCell>
-                <TableCell>{post.dueDate}</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>
-                  <ButtonGroup variant="text" aria-label="text button group">
-                    <Button color="secondary">See Details</Button>
-                    <Button color="secondary">Edit</Button>
-                    <Button color="secondary">Delete</Button>
-                  </ButtonGroup>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {posts.map((post) => (
+                  <TableRow
+                    key={post.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {post.organisationName}
+                    </TableCell>
+                    <TableCell>{post.contactName}</TableCell>
+                    <TableCell>{post.email}</TableCell>
+                    <TableCell>{post.dueDate}</TableCell>
+                    <TableCell>
+                      {`${post.isDisplay}`} (if false, see pending approval, if
+                      true, show listed)
+                    </TableCell>
+                    <TableCell>
+                      <ButtonGroup
+                        variant="text"
+                        aria-label="text button group"
+                      >
+                        <ListingModal post={post} />
+                        <Button color="secondary">Edit</Button>
+                        <Button color="secondary">Delete</Button>
+                      </ButtonGroup>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Stack>
+      </Container>
     </div>
   );
 }

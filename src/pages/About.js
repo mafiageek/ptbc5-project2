@@ -22,7 +22,7 @@ export default function About() {
     <div>
       <Box
         sx={{
-          height: 60,
+          height: 100,
         }}
       />
       <Typography variant="h4">About page</Typography>
