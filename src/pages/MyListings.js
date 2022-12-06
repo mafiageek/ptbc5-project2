@@ -73,8 +73,10 @@ export default function MyListings(props) {
                     <TableCell>{post.email}</TableCell>
                     <TableCell>{post.dueDate}</TableCell>
                     <TableCell>
-                      {`${post.isDisplay}`} (if false, see pending approval, if
-                      true, show listed)
+                      {
+                        post.isDisplay ? "Listed" : "Pending Approval"
+                      }
+               
                     </TableCell>
                     <TableCell>
                       <ButtonGroup

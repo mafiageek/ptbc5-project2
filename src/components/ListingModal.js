@@ -56,7 +56,7 @@ export default function ListingModal(props) {
 
               <Typography variant="h6">Address & Map</Typography>
               <Typography>Address goes here</Typography>
-              <Typography>Map goes here</Typography>
+              <Box component="img" height="120" src={props.post.mapURL} />
             </Stack>
             <Stack gap={2}>
               <Box bgcolor="#FCEDA5">
