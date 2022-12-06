@@ -2,7 +2,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 
 import ListCard from "../components/ListCard";
 import { Container } from "@mui/system";
-
+import { Link } from "react-router-dom";
 export default function Listings(props) {
   return (
     <div>
@@ -31,7 +31,13 @@ export default function Listings(props) {
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained">Submit Now</Button>
+              <Button
+                variant="contained"
+                component={Link}
+                to={"/SubmitRequest"}
+              >
+                Submit Now
+              </Button>
             </Grid>
           </Grid>
         </Box>
