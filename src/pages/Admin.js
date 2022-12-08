@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   onSnapshot,
   collection,
@@ -25,16 +26,17 @@ import { Box } from "@mui/system";
 import { db } from "../firebase";
 import ListingModal from "../components/ListingModal";
 
-export default function Admin() {
+export default function Admin(props) {
   const [toApprovePosts, setToApprovePosts] = useState([]);
   const [toUnlistPosts, setToUnlistPosts] = useState([]);
   const navigate = useNavigate();
 
-  const handleApprove = async (id) => {
+  const handleApprove = async (id, replyTo) => {
     const docRef = doc(db, "posts", id);
     await updateDoc(docRef, {
       isDisplay: true,
     });
+    emailNotify(replyTo);
   };
 
   const handleUnList = async (id) => {
@@ -52,6 +54,43 @@ export default function Admin() {
   function handleEdit(listingID) {
     navigate(`/EditListing/${listingID}`);
   }
+
+  const generateEmailPayload = (receiver1, subject, sender, message) => {
+    const TEMPLATE = {
+      personalizations: [
+        {
+          to: [{ email: receiver1 }],
+          subject,
+        },
+      ],
+      from: { email: sender },
+      content: [{ type: "text/plain", value: message }],
+    };
+    return JSON.stringify(TEMPLATE);
+  };
+
+  const emailNotify = (receiver1) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        `Your request has been approved`,
+        "no-reply@mail.com",
+        "Approved"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
 
   useEffect(
     () =>
@@ -111,7 +150,7 @@ export default function Admin() {
                         <ListingModal post={post} />
 
                         <Button
-                          onClick={() => handleApprove(post.id)}
+                          onClick={() => handleApprove(post.id, post.replyTo)}
                           color="secondary"
                         >
                           Approve
