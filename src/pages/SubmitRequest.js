@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
@@ -54,6 +54,8 @@ function SubmitRequest(props) {
 
   const [logo, setLogo] = React.useState(null);
   const [fileValue, setFileValue] = React.useState("");
+
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFileValue(e.target.value);
@@ -175,6 +177,7 @@ function SubmitRequest(props) {
       });
     });
     emailNotify("anton.kho@gmail.com", "weimankow@gmail.com");
+    navigate("/MyListings");
   };
 
   console.log(formData);
