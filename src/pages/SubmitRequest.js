@@ -150,7 +150,6 @@ function SubmitRequest(props) {
 
     // get mapURL
     getMapURL(formData.location).then((response) => {
-      console.log(response);
       setFormData((prevFormData) => ({
         ...prevFormData,
         mapURL: response,
@@ -218,6 +217,7 @@ function SubmitRequest(props) {
                 sx={{ mb: 3 }}
               >
                 <TextField
+                  required
                   fullWidth
                   sx={{ m: 1 }}
                   label="Contact Name"
@@ -230,6 +230,7 @@ function SubmitRequest(props) {
                   variant="outlined"
                 />
                 <TextField
+                  required
                   fullWidth
                   sx={{ m: 1 }}
                   label="Email"
@@ -257,6 +258,7 @@ function SubmitRequest(props) {
                   {/* <Typography>Organisation Logo </Typography>
         <Button variant="outlined"> Upload</Button> */}
                   <TextField
+                    required
                     fullWidth
                     sx={{ m: 1 }}
                     label="Organisation Name"
@@ -283,6 +285,7 @@ function SubmitRequest(props) {
                   />
 
                   <TextField
+                    required
                     fullWidth
                     sx={{ m: 1 }}
                     label="Project Name"
@@ -295,6 +298,7 @@ function SubmitRequest(props) {
                     variant="outlined"
                   />
                   <TextField
+                    required
                     label="Skills Needed"
                     fullWidth
                     sx={{ m: 1 }}
@@ -307,6 +311,7 @@ function SubmitRequest(props) {
                     // defaultValue="What skills do you need? e.g. illustration, content creating, video, packaging design"
                   />
                   <TextField
+                    required
                     label="Contact Details"
                     fullWidth
                     sx={{ m: 1 }}
@@ -333,6 +338,7 @@ function SubmitRequest(props) {
                 </Stack>
                 <Stack direction="column" sx={{ width: "100%" }} gap={2}>
                   <TextField
+                    required
                     label="Project Details"
                     fullWidth
                     sx={{ m: 1 }}
@@ -345,6 +351,7 @@ function SubmitRequest(props) {
                     // defaultValue="Tell us more about your project in detail."
                   />
                   <TextField
+                    required
                     label="Location postal code"
                     fullWidth
                     sx={{ m: 1 }}
