@@ -36,19 +36,21 @@ export default function Admin(props) {
     await updateDoc(docRef, {
       isDisplay: true,
     });
-    emailNotify(replyTo);
+    emailNotifyApproval(replyTo);
   };
 
-  const handleUnList = async (id) => {
+  const handleUnList = async (id, replyTo) => {
     const docRef = doc(db, "posts", id);
     await updateDoc(docRef, {
       isDisplay: false,
     });
+    emailNotifyUnlisted(replyTo);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, replyTo) => {
     const docRef = doc(db, "posts", id);
     await deleteDoc(docRef);
+    emailNotifyDelete(replyTo);
   };
 
   function handleEdit(listingID) {
@@ -69,7 +71,7 @@ export default function Admin(props) {
     return JSON.stringify(TEMPLATE);
   };
 
-  const emailNotify = (receiver1) => {
+  const emailNotifyApproval = (receiver1) => {
     const options = {
       method: "POST",
       url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
@@ -83,6 +85,52 @@ export default function Admin(props) {
         `Your request has been approved`,
         "no-reply@mail.com",
         "Approved"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
+
+  const emailNotifyDelete = (receiver1) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        `Your request has been deleted`,
+        "no-reply@mail.com",
+        "Deleted"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
+
+  const emailNotifyUnlisted = (receiver1) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        `Your request has been unlisted`,
+        "no-reply@mail.com",
+        "Unlisted"
       ),
     };
 
@@ -163,7 +211,7 @@ export default function Admin(props) {
                         </Button>
                         <Button
                           color="secondary"
-                          onClick={() => handleDelete(post.id)}
+                          onClick={() => handleDelete(post.id, post.replyTo)}
                         >
                           Delete
                         </Button>
@@ -214,7 +262,7 @@ export default function Admin(props) {
                         <ListingModal post={post} />
 
                         <Button
-                          onClick={() => handleUnList(post.id)}
+                          onClick={() => handleUnList(post.id, post.replyTo)}
                           color="secondary"
                         >
                           Unlist
@@ -227,7 +275,7 @@ export default function Admin(props) {
                         </Button>
                         <Button
                           color="secondary"
-                          onClick={() => handleDelete(post.id)}
+                          onClick={() => handleDelete(post.id, post.replyTo)}
                         >
                           Delete
                         </Button>
