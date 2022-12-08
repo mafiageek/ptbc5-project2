@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import axios from "axios";
@@ -30,6 +30,7 @@ function SubmitRequest(props) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [formData, setFormData] = useState({
     about: "",
+    address: "",
     contact: "",
     isDisplay: false,
     email: "",
@@ -106,47 +107,75 @@ function SubmitRequest(props) {
 
     axios
       .request(options)
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
   };
+
+  const getGeoData = (postalCode) => {
+    const result = axios
+      .get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
+      )
+      .then((response) => response.data.results[0])
+      .catch((error) => console.log(error));
+
+    return result;
+  };
+
+  const getMapURL = (postalCode) => {
+    let result = getGeoData(postalCode)
+      .then((geoData) =>
+        axios.get(
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
+      )
+      .then((response) => response.config.url)
+      .catch((error) => console.log(error));
+
+    return result;
+  };
+
+  useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // get address
+    getGeoData(formData.location).then((response) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        address: response.ADDRESS,
+      }));
+    });
+
+    // get mapURL
+    getMapURL(formData.location).then((response) => {
+      console.log(response);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        mapURL: response,
+      }));
+    });
+
+    // file reference
     const fileRef = storageRef(storage, `logos/${logo.name}`);
-    axios
-      .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
-      )
-      .then((response) => response.data.results[0])
-      .then((geoData) =>
-        axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
-        ),
-      )
-      .then((response) => {
-        console.log(response.config.url);
-        uploadBytes(fileRef, logo).then(() => {
-          getDownloadURL(fileRef).then((downloadUrl) => {
-            const collectionRef = collection(db, "posts");
-            addDoc(collectionRef, {
-              ...formData,
-              logoURL: downloadUrl,
-              mapURL: response.config.url,
-              dueDate: selectedDate.toDateString(),
-              uid: props.user.uid,
-              replyTo: props.user.email,
-              timestamp: serverTimestamp(),
-            });
-          });
+
+    // collection reference
+    const collectionRef = collection(db, "posts");
+
+    uploadBytes(fileRef, logo).then(() => {
+      getDownloadURL(fileRef).then((downloadUrl) => {
+        addDoc(collectionRef, {
+          ...formData,
+          logoURL: downloadUrl,
+          dueDate: selectedDate.toDateString(),
+          uid: props.user.uid,
+          replyTo: props.user.email,
+          timestamp: serverTimestamp(),
         });
       });
-
-    emailNotify("weimankow@gmail.com", "anton.kho@gmail.com");
+    });
+    emailNotify("anton.kho@gmail.com", "weimankow@gmail.com");
   };
 
   console.log(formData);
