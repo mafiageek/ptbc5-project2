@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   onSnapshot,
   collection,
@@ -25,33 +26,119 @@ import { Box } from "@mui/system";
 import { db } from "../firebase";
 import ListingModal from "../components/ListingModal";
 
-export default function Admin() {
+export default function Admin(props) {
   const [toApprovePosts, setToApprovePosts] = useState([]);
   const [toUnlistPosts, setToUnlistPosts] = useState([]);
   const navigate = useNavigate();
 
-  const handleApprove = async (id) => {
+  const handleApprove = async (id, replyTo) => {
     const docRef = doc(db, "posts", id);
     await updateDoc(docRef, {
       isDisplay: true,
     });
+    emailNotifyApproval(replyTo);
   };
 
-  const handleUnList = async (id) => {
+  const handleUnList = async (id, replyTo) => {
     const docRef = doc(db, "posts", id);
     await updateDoc(docRef, {
       isDisplay: false,
     });
+    emailNotifyUnlisted(replyTo);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, replyTo) => {
     const docRef = doc(db, "posts", id);
     await deleteDoc(docRef);
+    emailNotifyDelete(replyTo);
   };
 
   function handleEdit(listingID) {
     navigate(`/EditListing/${listingID}`);
   }
+
+  const generateEmailPayload = (receiver1, subject, sender, message) => {
+    const TEMPLATE = {
+      personalizations: [
+        {
+          to: [{ email: receiver1 }],
+          subject,
+        },
+      ],
+      from: { email: sender },
+      content: [{ type: "text/plain", value: message }],
+    };
+    return JSON.stringify(TEMPLATE);
+  };
+
+  const emailNotifyApproval = (receiver1) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        `Your request has been approved`,
+        "no-reply@mail.com",
+        "Approved"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
+
+  const emailNotifyDelete = (receiver1) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        `Your request has been deleted`,
+        "no-reply@mail.com",
+        "Deleted"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
+
+  const emailNotifyUnlisted = (receiver1) => {
+    const options = {
+      method: "POST",
+      url: "https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.REACT_APP_SENDGRID_API_KEY,
+        "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com",
+      },
+      data: generateEmailPayload(
+        receiver1,
+        `Your request has been unlisted`,
+        "no-reply@mail.com",
+        "Unlisted"
+      ),
+    };
+
+    axios
+      .request(options)
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
+  };
 
   useEffect(
     () =>
@@ -111,7 +198,7 @@ export default function Admin() {
                         <ListingModal post={post} />
 
                         <Button
-                          onClick={() => handleApprove(post.id)}
+                          onClick={() => handleApprove(post.id, post.replyTo)}
                           color="secondary"
                         >
                           Approve
@@ -124,7 +211,7 @@ export default function Admin() {
                         </Button>
                         <Button
                           color="secondary"
-                          onClick={() => handleDelete(post.id)}
+                          onClick={() => handleDelete(post.id, post.replyTo)}
                         >
                           Delete
                         </Button>
@@ -175,7 +262,7 @@ export default function Admin() {
                         <ListingModal post={post} />
 
                         <Button
-                          onClick={() => handleUnList(post.id)}
+                          onClick={() => handleUnList(post.id, post.replyTo)}
                           color="secondary"
                         >
                           Unlist
@@ -188,7 +275,7 @@ export default function Admin() {
                         </Button>
                         <Button
                           color="secondary"
-                          onClick={() => handleDelete(post.id)}
+                          onClick={() => handleDelete(post.id, post.replyTo)}
                         >
                           Delete
                         </Button>

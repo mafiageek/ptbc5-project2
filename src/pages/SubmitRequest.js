@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
@@ -30,6 +30,7 @@ function SubmitRequest(props) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [formData, setFormData] = useState({
     about: "",
+    address: "",
     contact: "",
     isDisplay: false,
     email: "",
@@ -53,6 +54,8 @@ function SubmitRequest(props) {
 
   const [logo, setLogo] = React.useState(null);
   const [fileValue, setFileValue] = React.useState("");
+
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFileValue(e.target.value);
@@ -106,47 +109,75 @@ function SubmitRequest(props) {
 
     axios
       .request(options)
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+      .then((response) => response.data)
+      .catch((error) => console.log(error));
   };
+
+  const getGeoData = (postalCode) => {
+    const result = axios
+      .get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
+      )
+      .then((response) => response.data.results[0])
+      .catch((error) => console.log(error));
+
+    return result;
+  };
+
+  const getMapURL = (postalCode) => {
+    let result = getGeoData(postalCode)
+      .then((geoData) =>
+        axios.get(
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
+      )
+      .then((response) => response.config.url)
+      .catch((error) => console.log(error));
+
+    return result;
+  };
+
+  useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // get address
+    getGeoData(formData.location).then((response) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        address: response.ADDRESS,
+      }));
+    });
+
+    // get mapURL
+    getMapURL(formData.location).then((response) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        mapURL: response,
+      }));
+    });
+
+    // file reference
     const fileRef = storageRef(storage, `logos/${logo.name}`);
-    axios
-      .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
-      )
-      .then((response) => response.data.results[0])
-      .then((geoData) =>
-        axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
-        ),
-      )
-      .then((response) => {
-        console.log(response.config.url);
-        uploadBytes(fileRef, logo).then(() => {
-          getDownloadURL(fileRef).then((downloadUrl) => {
-            const collectionRef = collection(db, "posts");
-            addDoc(collectionRef, {
-              ...formData,
-              logoURL: downloadUrl,
-              mapURL: response.config.url,
-              dueDate: selectedDate.toDateString(),
-              uid: props.user.uid,
-              replyTo: props.user.email,
-              timestamp: serverTimestamp(),
-            });
-          });
+
+    // collection reference
+    const collectionRef = collection(db, "posts");
+
+    uploadBytes(fileRef, logo).then(() => {
+      getDownloadURL(fileRef).then((downloadUrl) => {
+        addDoc(collectionRef, {
+          ...formData,
+          logoURL: downloadUrl,
+          dueDate: selectedDate.toDateString(),
+          uid: props.user.uid,
+          replyTo: props.user.email,
+          timestamp: serverTimestamp(),
         });
       });
-
-    emailNotify("weimankow@gmail.com", "anton.kho@gmail.com");
+    });
+    emailNotify("anton.kho@gmail.com", "weimankow@gmail.com");
+    navigate("/MyListings");
   };
 
   console.log(formData);
@@ -189,6 +220,7 @@ function SubmitRequest(props) {
                 sx={{ mb: 3 }}
               >
                 <TextField
+                  required
                   fullWidth
                   sx={{ m: 1 }}
                   label="Contact Name"
@@ -201,6 +233,7 @@ function SubmitRequest(props) {
                   variant="outlined"
                 />
                 <TextField
+                  required
                   fullWidth
                   sx={{ m: 1 }}
                   label="Email"
@@ -228,6 +261,7 @@ function SubmitRequest(props) {
                   {/* <Typography>Organisation Logo </Typography>
         <Button variant="outlined"> Upload</Button> */}
                   <TextField
+                    required
                     fullWidth
                     sx={{ m: 1 }}
                     label="Organisation Name"
@@ -254,6 +288,7 @@ function SubmitRequest(props) {
                   />
 
                   <TextField
+                    required
                     fullWidth
                     sx={{ m: 1 }}
                     label="Project Name"
@@ -266,6 +301,7 @@ function SubmitRequest(props) {
                     variant="outlined"
                   />
                   <TextField
+                    required
                     label="Skills Needed"
                     fullWidth
                     sx={{ m: 1 }}
@@ -278,6 +314,7 @@ function SubmitRequest(props) {
                     // defaultValue="What skills do you need? e.g. illustration, content creating, video, packaging design"
                   />
                   <TextField
+                    required
                     label="Contact Details"
                     fullWidth
                     sx={{ m: 1 }}
@@ -304,6 +341,7 @@ function SubmitRequest(props) {
                 </Stack>
                 <Stack direction="column" sx={{ width: "100%" }} gap={2}>
                   <TextField
+                    required
                     label="Project Details"
                     fullWidth
                     sx={{ m: 1 }}
@@ -316,6 +354,7 @@ function SubmitRequest(props) {
                     // defaultValue="Tell us more about your project in detail."
                   />
                   <TextField
+                    required
                     label="Location postal code"
                     fullWidth
                     sx={{ m: 1 }}

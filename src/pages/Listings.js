@@ -1,25 +1,9 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { onSnapshot, collection } from "firebase/firestore";
-import { db } from "../firebase";
+
 import ListCard from "../components/ListCard";
 import { Container } from "@mui/system";
-
+import { Link } from "react-router-dom";
 export default function Listings(props) {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "posts"), (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setPosts(data);
-        console.log(data);
-      }),
-    [],
-  );
   return (
     <div>
       <Box
@@ -47,7 +31,13 @@ export default function Listings(props) {
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained">Submit Now</Button>
+              <Button
+                variant="contained"
+                component={Link}
+                to={"/SubmitRequest"}
+              >
+                Submit Now
+              </Button>
             </Grid>
           </Grid>
         </Box>
@@ -62,7 +52,7 @@ export default function Listings(props) {
           Browse Volunteer Opportunities for Designers and Creatives
         </Typography>
       </Box>
-      <ListCard posts={posts} user={props.user} />
+      <ListCard user={props.user} />
     </div>
   );
 }

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { doc, deleteDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import {
   Card,
@@ -20,30 +19,34 @@ import {
   CalendarMonth,
   LocationOn,
   Storefront,
-  Delete,
-  Edit,
 } from "@mui/icons-material";
 import ListingModal from "./ListingModal";
 
 export default function ListCard(props) {
+  const [approvePosts, setApprovePosts] = useState([]);
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts"), (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setApprovePosts(data.filter((post) => post.isDisplay === true));
+        console.log(data);
+      }),
+    []
+  );
+
   const [query, setQuery] = useState("");
   const keys = ["skills", "project", "about", "remuneration"];
   const search = (data) => {
     return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(query)),
+      keys.some((key) => item[key].toLowerCase().includes(query))
     );
   };
 
-  const navigate = useNavigate();
-
-  const handleDelete = async (id) => {
-    const docRef = doc(db, "posts", id);
-    await deleteDoc(docRef);
-  };
-
-  function handleEdit(listingID) {
-    navigate(`/EditListing/${listingID}`);
-  }
+  console.log(approvePosts);
 
   return (
     <>
@@ -67,7 +70,7 @@ export default function ListCard(props) {
         />
       </Box>
       <Grid container spacing={0} sx={{ pl: 2 }}>
-        {search(props.posts).map((post) => (
+        {search(approvePosts).map((post) => (
           <Grid key={post.id} item xs={12} md={6} lg={3}>
             <Card variant="outlined" sx={{ p: 1, m: 2 }}>
               <CardContent>
@@ -116,12 +119,6 @@ export default function ListCard(props) {
               <CardActions>
                 <Stack direction="row" spacing={2}>
                   <ListingModal post={post} />
-                  {props.user?.uid === post?.uid && props.user?.uid != null && (
-                    <Delete onClick={() => handleDelete(post.id)} />
-                  )}
-                  {props.user?.uid === post?.uid && props.user?.uid != null && (
-                    <Edit onClick={() => handleEdit(post.id)} />
-                  )}
                 </Stack>
               </CardActions>
             </Card>

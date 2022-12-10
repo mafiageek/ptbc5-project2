@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -12,13 +14,23 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { Container, Stack } from "@mui/system";
 import ListingModal from "../components/ListingModal";
 
 export default function MyListings(props) {
   const [posts, setPosts] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "posts", id);
+    await deleteDoc(docRef);
+  };
+
+  function handleEdit(listingID) {
+    navigate(`/EditListing/${listingID}`);
+  }
 
   useEffect(
     () =>
@@ -28,12 +40,9 @@ export default function MyListings(props) {
           id: doc.id,
         }));
         setPosts(data.filter((post) => post.uid === props.user.uid));
-        console.log(data);
       }),
-    [props.user.uid],
+    [props.user.uid]
   );
-
-  console.log(posts);
 
   return (
     <div>
@@ -44,9 +53,8 @@ export default function MyListings(props) {
       />
       <Container>
         <Stack spacing={2}>
-      
-            <Typography variant="h4">My Listings</Typography>
-  
+          <Typography variant="h4">My Listings</Typography>
+
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -73,10 +81,7 @@ export default function MyListings(props) {
                     <TableCell>{post.email}</TableCell>
                     <TableCell>{post.dueDate}</TableCell>
                     <TableCell>
-                      {
-                        post.isDisplay ? "Listed" : "Pending Approval"
-                      }
-               
+                      {post.isDisplay ? "Listed" : "Pending Approval"}
                     </TableCell>
                     <TableCell>
                       <ButtonGroup
@@ -84,8 +89,18 @@ export default function MyListings(props) {
                         aria-label="text button group"
                       >
                         <ListingModal post={post} />
-                        <Button color="secondary">Edit</Button>
-                        <Button color="secondary">Delete</Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleEdit(post.id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleDelete(post.id)}
+                        >
+                          Delete
+                        </Button>
                       </ButtonGroup>
                     </TableCell>
                   </TableRow>
