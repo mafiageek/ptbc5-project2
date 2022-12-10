@@ -70,13 +70,13 @@ function EditListing() {
 
     axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
       )
       .then((response) => response.data.results[0])
       .then((geoData) =>
         axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
-        )
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
+        ),
       )
       .then((response) => {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
@@ -94,14 +94,14 @@ function EditListing() {
       />
       <Container sx={{ p: 2, mt: 2 }}>
         <Typography variant="h4" sx={{ pb: 2 }}>
-          Update Listing
+          Edit Listing
         </Typography>
 
         <Box component="form">
           <Typography>
-            We’ll take some time to review the details below, and get in touch
-            if we have any questions. You’ll hear from us if the listing is
-            approved!
+            Any updates to your information will be visible to the admin within
+            a few minutes. If your listing is already online, the public listing
+            will be updated directly.
           </Typography>
 
           <Paper sx={{ p: 2, mt: 2 }}>
@@ -113,7 +113,7 @@ function EditListing() {
               }}
             >
               <Typography sx={{ mb: 1 }}>
-                Information for us to contact you
+                Information for us to contact you (Visible to Site Admin only)
               </Typography>
 
               <Stack
@@ -149,8 +149,8 @@ function EditListing() {
 
               <Divider />
               <Typography sx={{ mb: 1 }}>
-                Information you would like to display in the volunteer
-                opportunities page
+                Information to display in the volunteer opportunities page
+                (Public)
               </Typography>
               <Stack
                 direction={{ xs: "column", sm: "row" }}
@@ -158,8 +158,6 @@ function EditListing() {
                 gap={2}
               >
                 <Stack direction="column" sx={{ width: "100%" }} gap={2}>
-                  {/* <Typography>Organisation Logo </Typography>
-        <Button variant="outlined"> Upload</Button> */}
                   <TextField
                     fullWidth
                     sx={{ m: 1 }}
@@ -172,7 +170,18 @@ function EditListing() {
                     size="Normal"
                     variant="outlined"
                   />
-
+                  <TextField
+                    fullWidth
+                    sx={{ m: 1 }}
+                    label="Project Name"
+                    id="projectnName"
+                    name="projectName"
+                    onChange={handleChange}
+                    value={formData.projectName}
+                    // defaultValue="Enter Name"
+                    size="Normal"
+                    variant="outlined"
+                  />
                   <TextField
                     label="Skills Needed"
                     fullWidth
@@ -185,6 +194,7 @@ function EditListing() {
                     rows={4}
                     // defaultValue="What skills do you need? e.g. illustration, content creating, video, packaging design"
                   />
+
                   <TextField
                     label="Contact Details"
                     fullWidth

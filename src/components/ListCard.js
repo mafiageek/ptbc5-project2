@@ -99,10 +99,7 @@ export default function ListCard(props) {
                         : post.dueDate}
                     </Typography>
                   </Stack>
-                  <Stack direction="row" gap={1}>
-                    <LocationOn />
-                    <img src={post.mapURL} alt="location" />
-                  </Stack>
+                  
                   <Stack direction="row" gap={1}>
                     <Storefront />
                     <Typography>{post.organisationName}</Typography>
