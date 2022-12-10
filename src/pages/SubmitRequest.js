@@ -113,24 +113,6 @@ function SubmitRequest(props) {
       .catch((error) => console.log(error));
   };
 
-  // const getGeoData = async (postalCode) => {
-  //   await axios
-  //     .get(
-  //       `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
-  //     )
-  //     .then((response) => response.data.results[0])
-  //     .then((response) => {
-  //       setFormData((prevFormData) => ({
-  //         ...prevFormData,
-  //         address: response.ADDRESS,
-  //         lat: response.LATITUDE,
-  //         lng: response.LONGITUDE,
-  //       }));
-  //     })
-  //     .catch((error) => console.log(error));
-
-  // };
-
   const getGeoData = async (location) => {
     await axios
       .get(
@@ -163,8 +145,10 @@ function SubmitRequest(props) {
   };
 
   useEffect(() => {
-    getGeoData(formData.location);
-    getMapURL(formData.lat, formData.lng, formData.location);
+    if (formData.location.length === 6) {
+      getGeoData(formData.location);
+      getMapURL(formData.lat, formData.lng, formData.location);
+    }
   }, [formData.lat, formData.lng, formData.location]);
 
   const handleSubmit = (e) => {
