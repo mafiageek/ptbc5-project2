@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { onSnapshot, collection, updateDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import {
+  onSnapshot,
+  collection,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import {
   TableContainer,
   Typography,
@@ -19,13 +26,32 @@ import { db } from "../firebase";
 import ListingModal from "../components/ListingModal";
 
 export default function Admin() {
-  const [posts, setPosts] = useState([]);
+  const [toApprovePosts, setToApprovePosts] = useState([]);
+  const [toUnlistPosts, setToUnlistPosts] = useState([]);
+  const navigate = useNavigate();
 
-  const handleApprove = (id) => {
-    const docRef = doc(db, "post", id);
-    updateDoc(docRef, { isDisplay: true });
-    console.log();
+  const handleApprove = async (id) => {
+    const docRef = doc(db, "posts", id);
+    await updateDoc(docRef, {
+      isDisplay: true,
+    });
   };
+
+  const handleUnList = async (id) => {
+    const docRef = doc(db, "posts", id);
+    await updateDoc(docRef, {
+      isDisplay: false,
+    });
+  };
+
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "posts", id);
+    await deleteDoc(docRef);
+  };
+
+  function handleEdit(listingID) {
+    navigate(`/EditListing/${listingID}`);
+  }
 
   useEffect(
     () =>
@@ -34,10 +60,10 @@ export default function Admin() {
           ...doc.data(),
           id: doc.id,
         }));
-        setPosts(data);
-        console.log(data);
+        setToApprovePosts(data.filter((post) => post.isDisplay === false));
+        setToUnlistPosts(data.filter((post) => post.isDisplay === true));
       }),
-    [],
+    []
   );
 
   return (
@@ -65,7 +91,7 @@ export default function Admin() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {posts.map((post) => (
+                {toApprovePosts.map((post) => (
                   <TableRow
                     key={post.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -85,13 +111,23 @@ export default function Admin() {
                         <ListingModal post={post} />
 
                         <Button
-                          onClick={handleApprove(post.id)}
+                          onClick={() => handleApprove(post.id)}
                           color="secondary"
                         >
                           Approve
                         </Button>
-                        <Button color="secondary">Edit</Button>
-                        <Button color="secondary">Delete</Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleEdit(post.id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleDelete(post.id)}
+                        >
+                          Delete
+                        </Button>
                       </ButtonGroup>
                     </TableCell>
                   </TableRow>
@@ -118,7 +154,7 @@ export default function Admin() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {posts.map((post) => (
+                {toUnlistPosts.map((post) => (
                   <TableRow
                     key={post.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -138,9 +174,24 @@ export default function Admin() {
                       >
                         <ListingModal post={post} />
 
-                        <Button color="secondary">Unlist</Button>
-                        <Button color="secondary">Edit</Button>
-                        <Button color="secondary">Delete</Button>
+                        <Button
+                          onClick={() => handleUnList(post.id)}
+                          color="secondary"
+                        >
+                          Unlist
+                        </Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleEdit(post.id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleDelete(post.id)}
+                        >
+                          Delete
+                        </Button>
                       </ButtonGroup>
                     </TableCell>
                   </TableRow>
