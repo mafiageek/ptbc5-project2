@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Admin from "./pages/Admin";
-import About from "./pages/About";
+import HowItWorks from "./pages/HowItWorks";
 import Listings from "./pages/Listings";
 import SubmitRequest from "./pages/SubmitRequest";
 import PrivateRoute from "./components/PrivateRoute";
@@ -91,7 +91,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Listings user={user} />} />
-              <Route path="/About" element={<About />} />
+              <Route path="/HowItWorks" element={<HowItWorks />} />
               <Route
                 path="/SubmitRequest"
                 element={<PrivateRoute user={user} />}
