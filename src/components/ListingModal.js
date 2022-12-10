@@ -21,10 +21,11 @@ export default function ListingModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const buttonProps = props.buttonProps || {};
 
   return (
     <div>
-      <Button color="primary" variant="contained" onClick={handleOpen}>
+      <Button color="primary" variant="contained" onClick={handleOpen} {...buttonProps}>
         See Details
       </Button>
       <Modal
