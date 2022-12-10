@@ -22,9 +22,9 @@ export default function NavBar(props) {
             MAKING MEANING
           </Typography>
 
-          <Button component={Link} to={"/About"} variant="text">
+          <Button component={Link} to={"/HowItWorks"} variant="text">
             {" "}
-            About
+            How it Works
           </Button>
 
           <Button component={Link} to={"/SubmitRequest"} variant="text">
