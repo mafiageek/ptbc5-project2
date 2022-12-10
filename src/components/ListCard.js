@@ -17,7 +17,6 @@ import {
 import {
   BusinessCenter,
   CalendarMonth,
-  LocationOn,
   Storefront,
 } from "@mui/icons-material";
 import ListingModal from "./ListingModal";
