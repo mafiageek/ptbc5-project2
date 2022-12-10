@@ -113,50 +113,48 @@ function SubmitRequest(props) {
       .catch((error) => console.log(error));
   };
 
-  const getGeoData = (postalCode) => {
-    const result = axios
+  const getGeoData = async (postalCode) => {
+    await axios
       .get(
         `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
       )
       .then((response) => response.data.results[0])
+      .then((response) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          address: response.ADDRESS,
+          lat: response.LATITUDE,
+          lng: response.LONGITUDE,
+        }));
+      })
       .catch((error) => console.log(error));
-
-    return result;
   };
 
-  const getMapURL = (postalCode) => {
-    let result = getGeoData(postalCode)
-      .then((geoData) =>
-        axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
-        )
+  const getMapURL = async (lat, lng, location) => {
+    await axios
+      .get(
+        `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${lat}&lng=${lng}&postal=${location}&zoom=15&width=512&height=256&points=[${lat},${lng}]`
       )
-      .then((response) => response.config.url)
+      .then((response) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          mapURL: response.config.url,
+        }));
+      })
       .catch((error) => console.log(error));
-
-    return result;
   };
 
   useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
 
     // get address
-    getGeoData(formData.location).then((response) => {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        address: response.ADDRESS,
-      }));
-    });
+    getGeoData(formData.location);
 
     // get mapURL
-    getMapURL(formData.location).then((response) => {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        mapURL: response,
-      }));
-    });
+    getMapURL(formData.lat, formData.lng, formData.location);
 
     // file reference
     const fileRef = storageRef(storage, `logos/${logo.name}`);
@@ -179,8 +177,6 @@ function SubmitRequest(props) {
     emailNotify("anton.kho@gmail.com", "weimankow@gmail.com");
     navigate("/MyListings");
   };
-
-  console.log(formData);
 
   return (
     <div>
