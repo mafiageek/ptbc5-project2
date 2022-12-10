@@ -3,6 +3,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import ListCard from "../components/ListCard";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
+
 export default function Listings(props) {
   return (
     <div>

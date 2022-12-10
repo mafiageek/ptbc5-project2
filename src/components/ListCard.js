@@ -14,11 +14,7 @@ import {
   Box,
 } from "@mui/material";
 
-import {
-  BusinessCenter,
-  CalendarMonth,
-  Storefront,
-} from "@mui/icons-material";
+import { BusinessCenter, CalendarMonth, Storefront } from "@mui/icons-material";
 import ListingModal from "./ListingModal";
 
 export default function ListCard(props) {
@@ -38,7 +34,16 @@ export default function ListCard(props) {
   );
 
   const [query, setQuery] = useState("");
-  const keys = ["skills", "project", "about", "remuneration"];
+  const keys = [
+    "skills",
+    "project",
+    "about",
+    "remuneration",
+    "organisationName",
+    "projectName",
+    "renumerationDetails",
+    "projectName",
+  ];
   const search = (data) => {
     return data.filter((item) =>
       keys.some((key) => item[key].toLowerCase().includes(query))
@@ -98,7 +103,7 @@ export default function ListCard(props) {
                         : post.dueDate}
                     </Typography>
                   </Stack>
-                  
+
                   <Stack direction="row" gap={1}>
                     <Storefront />
                     <Typography>{post.organisationName}</Typography>
