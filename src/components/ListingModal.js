@@ -25,7 +25,12 @@ export default function ListingModal(props) {
 
   return (
     <div>
-      <Button color="primary" variant="contained" onClick={handleOpen} {...buttonProps}>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={handleOpen}
+        {...buttonProps}
+      >
         See Details
       </Button>
       <Modal
@@ -56,7 +61,7 @@ export default function ListingModal(props) {
               </Stack>
 
               <Typography variant="h6">Address & Map</Typography>
-              <Typography>Address goes here</Typography>
+              <Typography>{props.post.address}</Typography>
               <Box component="img" height="120" src={props.post.mapURL} />
             </Stack>
             <Stack gap={2}>

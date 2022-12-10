@@ -113,10 +113,28 @@ function SubmitRequest(props) {
       .catch((error) => console.log(error));
   };
 
-  const getGeoData = async (postalCode) => {
+  // const getGeoData = async (postalCode) => {
+  //   await axios
+  //     .get(
+  //       `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
+  //     )
+  //     .then((response) => response.data.results[0])
+  //     .then((response) => {
+  //       setFormData((prevFormData) => ({
+  //         ...prevFormData,
+  //         address: response.ADDRESS,
+  //         lat: response.LATITUDE,
+  //         lng: response.LONGITUDE,
+  //       }));
+  //     })
+  //     .catch((error) => console.log(error));
+
+  // };
+
+  const getGeoData = async (location) => {
     await axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y`
+        `https://developers.onemap.sg/commonapi/search?searchVal=${location}&returnGeom=Y&getAddrDetails=Y`
       )
       .then((response) => response.data.results[0])
       .then((response) => {
@@ -144,17 +162,14 @@ function SubmitRequest(props) {
       .catch((error) => console.log(error));
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getGeoData(formData.location);
+    getMapURL(formData.lat, formData.lng, formData.location);
+  }, [formData.lat, formData.lng, formData.location]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-
-    // get address
-    getGeoData(formData.location);
-
-    // get mapURL
-    getMapURL(formData.lat, formData.lng, formData.location);
 
     // file reference
     const fileRef = storageRef(storage, `logos/${logo.name}`);
@@ -174,6 +189,7 @@ function SubmitRequest(props) {
         });
       });
     });
+
     emailNotify("anton.kho@gmail.com", "weimankow@gmail.com");
     navigate("/MyListings");
   };
