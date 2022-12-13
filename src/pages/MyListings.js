@@ -14,6 +14,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { db } from "../firebase";
 import { Container, Stack } from "@mui/system";
 import ListingModal from "../components/ListingModal";
@@ -41,7 +43,7 @@ export default function MyListings(props) {
         }));
         setPosts(data.filter((post) => post.uid === props.user.uid));
       }),
-    [props.user.uid]
+    [props.user.uid],
   );
 
   return (
@@ -64,6 +66,7 @@ export default function MyListings(props) {
                   <TableCell>Email</TableCell>
                   <TableCell>Deadline</TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell>Details</TableCell>
 
                   <TableCell>Actions</TableCell>
                 </TableRow>
@@ -84,22 +87,24 @@ export default function MyListings(props) {
                       {post.isDisplay ? "Listed" : "Pending Approval"}
                     </TableCell>
                     <TableCell>
+                      <ListingModal post={post} />
+                    </TableCell>
+                    <TableCell>
                       <ButtonGroup
                         variant="text"
                         aria-label="text button group"
                       >
-                        <ListingModal post={post} />
                         <Button
                           color="secondary"
                           onClick={() => handleEdit(post.id)}
                         >
-                          Edit
+                          <EditIcon />
                         </Button>
                         <Button
                           color="secondary"
                           onClick={() => handleDelete(post.id)}
                         >
-                          Delete
+                          <DeleteIcon />
                         </Button>
                       </ButtonGroup>
                     </TableCell>

@@ -22,6 +22,8 @@ import {
   Container,
   Stack,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Box } from "@mui/system";
 import { db } from "../firebase";
 import ListingModal from "../components/ListingModal";
@@ -84,7 +86,7 @@ export default function Admin(props) {
         receiver1,
         `Your request has been approved`,
         "no-reply@mail.com",
-        "Approved"
+        "Approved",
       ),
     };
 
@@ -107,7 +109,7 @@ export default function Admin(props) {
         receiver1,
         `Your request has been deleted`,
         "no-reply@mail.com",
-        "Deleted"
+        "Deleted",
       ),
     };
 
@@ -130,7 +132,7 @@ export default function Admin(props) {
         receiver1,
         `Your request has been unlisted`,
         "no-reply@mail.com",
-        "Unlisted"
+        "Unlisted",
       ),
     };
 
@@ -150,7 +152,7 @@ export default function Admin(props) {
         setToApprovePosts(data.filter((post) => post.isDisplay === false));
         setToUnlistPosts(data.filter((post) => post.isDisplay === true));
       }),
-    []
+    [],
   );
 
   return (
@@ -173,7 +175,7 @@ export default function Admin(props) {
                   <TableCell>Email</TableCell>
                   <TableCell>Deadline</TableCell>
                   <TableCell>Remuneration</TableCell>
-
+                  <TableCell>Details</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -191,12 +193,13 @@ export default function Admin(props) {
                     <TableCell>{post.dueDate}</TableCell>
                     <TableCell>{post.remuneration}</TableCell>
                     <TableCell>
+                      <ListingModal post={post} />
+                    </TableCell>
+                    <TableCell>
                       <ButtonGroup
                         variant="text"
                         aria-label="text button group"
                       >
-                        <ListingModal post={post} />
-
                         <Button
                           onClick={() => handleApprove(post.id, post.replyTo)}
                           color="secondary"
@@ -207,13 +210,13 @@ export default function Admin(props) {
                           color="secondary"
                           onClick={() => handleEdit(post.id)}
                         >
-                          Edit
+                          <EditIcon />
                         </Button>
                         <Button
                           color="secondary"
                           onClick={() => handleDelete(post.id, post.replyTo)}
                         >
-                          Delete
+                          <DeleteIcon />
                         </Button>
                       </ButtonGroup>
                     </TableCell>
@@ -237,6 +240,7 @@ export default function Admin(props) {
                   <TableCell>Email</TableCell>
                   <TableCell>Deadline</TableCell>
                   <TableCell>Remuneration</TableCell>
+                  <TableCell>Details</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -253,14 +257,14 @@ export default function Admin(props) {
                     <TableCell>{post.email}</TableCell>
                     <TableCell>{post.dueDate}</TableCell>
                     <TableCell>{post.remuneration}</TableCell>
-
+                    <TableCell>
+                      <ListingModal post={post} />
+                    </TableCell>
                     <TableCell>
                       <ButtonGroup
                         variant="text"
                         aria-label="text button group"
                       >
-                        <ListingModal post={post} />
-
                         <Button
                           onClick={() => handleUnList(post.id, post.replyTo)}
                           color="secondary"
@@ -271,13 +275,13 @@ export default function Admin(props) {
                           color="secondary"
                           onClick={() => handleEdit(post.id)}
                         >
-                          Edit
+                          <EditIcon />
                         </Button>
                         <Button
                           color="secondary"
                           onClick={() => handleDelete(post.id, post.replyTo)}
                         >
-                          Delete
+                          <DeleteIcon />
                         </Button>
                       </ButtonGroup>
                     </TableCell>

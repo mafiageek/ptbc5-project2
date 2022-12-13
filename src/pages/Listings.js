@@ -25,10 +25,10 @@ export default function Listings(props) {
             <Typography>
               Are you a non-profit organisation, community or ground-up
               initiative who has a project that needs a little bit of creative
-              magic? Check out our <Link>How it Works</Link> page on how to
-              create a listing to call out to creative volunteers who have the
-              skills to help you with design, branding, social media, or run a
-              problem-solving workshop with you!
+              magic? Check out our <Link to={"/HowItWorks"}>How it Works</Link>{" "}
+              page on how to create a listing to call out to creative volunteers
+              who have the skills to help you with design, branding, social
+              media, or run a problem-solving workshop with you!
             </Typography>
           </Grid>
         </Box>
