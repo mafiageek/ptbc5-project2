@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 export default function HowItWorks() {
@@ -95,10 +95,11 @@ export default function HowItWorks() {
                       cause!
                       <br />
                       <br />
-                      Have a specific non-profit or type of project you want to
-                      volunteer for? You can search for projects that are paid
-                      and low bono, as well as organisation names and skills
-                      needed in the search bar on the listing site.
+                      <Typography variant="h6">Looking for something specific? </Typography>
+                    
+                      You can search for projects that are paid and low bono, as
+                      well as organisation names and skills needed in the search
+                      bar on the listing site.
                     </Typography>
                   </Container>
                 </Paper>
@@ -107,12 +108,11 @@ export default function HowItWorks() {
           </Grid>
           <Grid item>
             <Typography variant="h6">Note</Typography>
-          </Grid>
-          <Grid item>
+        
             <Typography>
               This is a class project that is inspired by the site{" "}
               <a href="https://www.makingmeaning.net/">Making Meaning</a> and is
-              currently a demo.
+              currently a demo site. It is not connected up to the main site.
             </Typography>
           </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import ListCard from "../components/ListCard";
 import { Container } from "@mui/system";
@@ -26,9 +26,7 @@ export default function Listings(props) {
               Are you a non-profit organisation, community or ground-up
               initiative who has a project that needs a little bit of creative
               magic? Check out our <Link to={"/HowItWorks"}>How it Works</Link>{" "}
-              page on how to create a listing to call out to creative volunteers
-              who have the skills to help you with design, branding, social
-              media, or run a problem-solving workshop with you!
+              page to find out how to create a volunteer listing!
             </Typography>
           </Grid>
         </Box>
