@@ -1,8 +1,8 @@
 import React from "react";
-import { Container, Grid, imageListClasses, Paper, Typography } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import NonProfitImg from "../images/non-profit-img.png"
-import VolunteerImg from "../images/volunteer-img.png"
+import NonProfitImg from "../images/non-profit-img.png";
+import VolunteerImg from "../images/volunteer-img.png";
 
 export default function HowItWorks() {
   return (
@@ -97,8 +97,9 @@ export default function HowItWorks() {
                       cause!
                       <br />
                       <br />
-                      <Typography variant="h6">Looking for something specific? </Typography>
-                    
+                      <Typography variant="h6">
+                        Looking for something specific?{" "}
+                      </Typography>
                       You can search for projects that are paid and low bono, as
                       well as organisation names and skills needed in the search
                       bar on the listing site.
@@ -110,7 +111,7 @@ export default function HowItWorks() {
           </Grid>
           <Grid item>
             <Typography variant="h6">Note</Typography>
-        
+
             <Typography>
               This is a class project that is inspired by the site{" "}
               <a href="https://www.makingmeaning.net/">Making Meaning</a> and is
