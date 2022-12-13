@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { useNavigate } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import {
@@ -74,7 +75,7 @@ function SubmitRequest(props) {
     receiver2,
     subject,
     sender,
-    message
+    message,
   ) => {
     const TEMPLATE = {
       personalizations: [
@@ -103,7 +104,7 @@ function SubmitRequest(props) {
         receiver2,
         `A new request from ${props.user.displayName}`,
         "no-reply@mail.com",
-        "Review"
+        "Review",
       ),
     };
 
@@ -116,7 +117,7 @@ function SubmitRequest(props) {
   const getGeoData = async (location) => {
     await axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${location}&returnGeom=Y&getAddrDetails=Y`
+        `https://developers.onemap.sg/commonapi/search?searchVal=${location}&returnGeom=Y&getAddrDetails=Y`,
       )
       .then((response) => response.data.results[0])
       .then((response) => {
@@ -133,7 +134,7 @@ function SubmitRequest(props) {
   const getMapURL = async (lat, lng, location) => {
     await axios
       .get(
-        `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${lat}&lng=${lng}&postal=${location}&zoom=15&width=512&height=256&points=[${lat},${lng}]`
+        `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${lat}&lng=${lng}&postal=${location}&zoom=15&width=512&height=256&points=[${lat},${lng}]`,
       )
       .then((response) => {
         setFormData((prevFormData) => ({
@@ -397,7 +398,15 @@ function SubmitRequest(props) {
                   />
                 </Stack>
               </Stack>
-              <Grid container justifyContent="start">
+              <Grid container justifyContent="space-between">
+                <Button
+                  sx={{ ml: 1, mt: 2 }}
+                  variant="outlined"
+                  component={Link}
+                  to={"/MyListings"}
+                >
+                  Back
+                </Button>
                 <Button
                   sx={{ ml: 1, mt: 2 }}
                   variant="contained"

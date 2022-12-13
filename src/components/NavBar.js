@@ -27,13 +27,6 @@ export default function NavBar(props) {
             How it Works
           </Button>
 
-          {props.user?.uid && (
-            <Button component={Link} to={"/SubmitRequest"} variant="text">
-              {" "}
-              Submit Request
-            </Button>
-          )}
-
           <Button component={Link} to={"/"} variant="text">
             Volunteer Opportunities
           </Button>
@@ -60,12 +53,6 @@ export default function NavBar(props) {
             </Button>
           ) : (
             <>
-              <Typography
-                sx={{ textTransform: "uppercase", pr: 2, fontWeight: "bold" }}
-                style={{ color: "#3D45AC" }}
-              >
-                {props.user?.displayName}
-              </Typography>
               <Button
                 variant="contained"
                 color="secondary"

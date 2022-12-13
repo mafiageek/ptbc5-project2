@@ -30,7 +30,7 @@ export default function ListCard(props) {
         setApprovePosts(data.filter((post) => post.isDisplay === true));
         console.log(data);
       }),
-    []
+    [],
   );
 
   const [query, setQuery] = useState("");
@@ -46,7 +46,7 @@ export default function ListCard(props) {
   ];
   const search = (data) => {
     return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(query))
+      keys.some((key) => item[key].toLowerCase().includes(query)),
     );
   };
 
@@ -87,7 +87,6 @@ export default function ListCard(props) {
 
                   <Stack direction="row" gap={1}>
                     <Chip label={post.remuneration} />
-                    <Chip label="Available" />
                   </Stack>
 
                   <Stack direction="row" gap={1}>
