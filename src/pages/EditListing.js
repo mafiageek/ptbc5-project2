@@ -81,6 +81,8 @@ function EditListing() {
       .then((response) => {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
       });
+
+      navigate("/MyListings?success=true" ) 
   };
 
   console.log("editlisting data", formData);

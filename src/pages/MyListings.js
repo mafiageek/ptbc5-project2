@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import {
   Box,
@@ -25,6 +25,11 @@ export default function MyListings(props) {
   const [posts, setPosts] = useState([]);
 
   const navigate = useNavigate();
+    const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let success = params.get("success"); 
+
+  console.log(success);
 
   const handleDelete = async (id) => {
     const docRef = doc(db, "posts", id);

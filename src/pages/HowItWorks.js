@@ -1,6 +1,8 @@
 import React from "react";
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import { Container, Grid, imageListClasses, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import NonProfitImg from "../images/non-profit-img.png"
+import VolunteerImg from "../images/volunteer-img.png"
 
 export default function HowItWorks() {
   return (
@@ -48,7 +50,7 @@ export default function HowItWorks() {
                         maxHeight: { xs: 233, md: 167 },
                         maxWidth: { xs: 350, md: 250 },
                       }}
-                      src="../images/non-profit-img.png"
+                      src={NonProfitImg}
                     />
                     <Typography variant="h6">
                       Are you a non-profit looking for support?
@@ -82,7 +84,7 @@ export default function HowItWorks() {
                         maxHeight: { xs: 233, md: 167 },
                         maxWidth: { xs: 350, md: 250 },
                       }}
-                      src="src/images/volunteer-img.png"
+                      src={VolunteerImg}
                     />
                     <Typography variant="h6">
                       Are you a creative who wants to flex your design skills
