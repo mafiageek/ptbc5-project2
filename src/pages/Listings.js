@@ -22,24 +22,14 @@ export default function Listings(props) {
             display="flex"
             alignItems="center"
           >
-            <Grid item xs={10}>
-              <Typography>
-                Are you a non-profit organisation, community or ground-up
-                initiative who has a project that needs a little bit of creative
-                magic? Create a listing to call out to creative volunteers who
-                have the skills to help you with design, branding, social media,
-                or run a problem-solving workshop with you!
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Button
-                variant="contained"
-                component={Link}
-                to={"/SubmitRequest"}
-              >
-                Submit Now
-              </Button>
-            </Grid>
+            <Typography>
+              Are you a non-profit organisation, community or ground-up
+              initiative who has a project that needs a little bit of creative
+              magic? Check out our <Link>How it Works</Link> page on how to
+              create a listing to call out to creative volunteers who have the
+              skills to help you with design, branding, social media, or run a
+              problem-solving workshop with you!
+            </Typography>
           </Grid>
         </Box>
       </Container>
