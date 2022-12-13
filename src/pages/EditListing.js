@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -283,7 +283,16 @@ function EditListing() {
                   />
                 </Stack>
               </Stack>
-              <Grid container justifyContent="start">
+              <Grid container justifyContent="space-between">
+                <Button
+                  sx={{ ml: 1, mt: 2 }}
+                  variant="outlined"
+                  component={Link}
+                  to={"/MyListings"}
+                >
+                  Cancel
+                </Button>
+
                 <Button
                   sx={{ ml: 1, mt: 2 }}
                   variant="contained"
