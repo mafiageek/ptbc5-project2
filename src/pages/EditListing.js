@@ -70,13 +70,13 @@ function EditListing() {
 
     axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
       )
       .then((response) => response.data.results[0])
       .then((geoData) =>
         axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
-        ),
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
       )
       .then((response) => {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
@@ -181,6 +181,7 @@ function EditListing() {
                     // defaultValue="Enter Name"
                     size="Normal"
                     variant="outlined"
+                    InputLabelProps={{ shrink: true }}
                   />
                   <TextField
                     label="Skills Needed"
