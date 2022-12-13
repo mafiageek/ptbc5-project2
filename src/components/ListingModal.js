@@ -45,7 +45,6 @@ export default function ListingModal(props) {
               <Box component="img" height="120" src={props.post.logoURL} />
               <Stack direction="row" gap={1}>
                 <Chip label={props.post.remuneration} />
-                <Chip label="Available" />
               </Stack>
               <Stack>
                 <Typography variant="h6">Skills Needed</Typography>
