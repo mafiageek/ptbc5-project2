@@ -55,7 +55,9 @@ export default function MyListings(props) {
       />
       <Container>
         <Stack spacing={2}>
-          <Typography variant="h4">My Listings</Typography>
+          <Typography variant="h4">
+            My Listings ({props.user?.displayName})
+          </Typography>
 
           <TableContainer component={Paper}>
             <Table>

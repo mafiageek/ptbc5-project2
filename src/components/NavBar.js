@@ -60,12 +60,6 @@ export default function NavBar(props) {
             </Button>
           ) : (
             <>
-              <Typography
-                sx={{ textTransform: "uppercase", pr: 2, fontWeight: "bold" }}
-                style={{ color: "#3D45AC" }}
-              >
-                {props.user?.displayName}
-              </Typography>
               <Button
                 variant="contained"
                 color="secondary"

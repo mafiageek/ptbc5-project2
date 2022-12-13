@@ -162,9 +162,12 @@ export default function Admin(props) {
           height: 100,
         }}
       />
+
       <Container>
         <Stack spacing={2}>
-          <Typography variant="h4">My Dashboard</Typography>
+          <Typography variant="h4">
+            My Dashboard ({props.user?.displayName})
+          </Typography>
           <Typography variant="h6">Listings to Approve</Typography>
           <TableContainer component={Paper}>
             <Table>
