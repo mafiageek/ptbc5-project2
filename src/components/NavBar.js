@@ -27,13 +27,6 @@ export default function NavBar(props) {
             How it Works
           </Button>
 
-          {props.user?.uid && (
-            <Button component={Link} to={"/SubmitRequest"} variant="text">
-              {" "}
-              Submit Request
-            </Button>
-          )}
-
           <Button component={Link} to={"/"} variant="text">
             Volunteer Opportunities
           </Button>

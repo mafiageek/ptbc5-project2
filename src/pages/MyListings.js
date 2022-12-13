@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import {
   Box,
   Button,
   ButtonGroup,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -54,7 +55,42 @@ export default function MyListings(props) {
         }}
       />
       <Container>
+        <Container sx={{ pb: 4 }}>
+          <Box bgcolor="#FCEDA5" p={4}>
+            <Grid
+              container
+              spacing={1}
+              direction="row"
+              justifyContent="space-between"
+              display="flex"
+              alignItems="center"
+            >
+              <Grid item xs={10}>
+                <Typography variant="h6">
+                  Need help with design, branding, or social media for your for
+                  good initiative?
+                </Typography>
+                <Typography>
+                  Submit a detailed request for volunteers by filling up a form
+                  here. We'll take a few days to approve your listing, and you
+                  will get an email notification once it is up on the site!{" "}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Button
+                  component={Link}
+                  to={"/SubmitRequest"}
+                  variant="contained"
+                >
+                  Submit Request
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Container>
+
         <Stack spacing={2}>
+          <Box></Box>
           <Typography variant="h4">
             My Listings ({props.user?.displayName})
           </Typography>
