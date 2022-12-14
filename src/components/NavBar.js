@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import { Button, Typography, AppBar, Toolbar } from "@mui/material";
+import { Button, Typography, AppBar, Toolbar, Box } from "@mui/material";
 
 export default function NavBar(props) {
   const admins = [
@@ -10,14 +10,22 @@ export default function NavBar(props) {
     process.env.REACT_APP_ADMIN_AK,
   ];
   return (
-    <>
-      <AppBar>
-        <Toolbar>
+    <AppBar>
+      <Toolbar>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            flexGrow: 1,
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           <Typography
             component={Link}
             to={"/"}
             variant="h6"
-            sx={{ flexGrow: 1, textDecoration: "none", color: "white" }}
+            sx={{ mr: "auto", textDecoration: "none", color: "white" }}
           >
             MAKING MEANING
           </Typography>
@@ -62,8 +70,8 @@ export default function NavBar(props) {
               </Button>
             </>
           )}
-        </Toolbar>
-      </AppBar>
-    </>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
