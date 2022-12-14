@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
 import {
   Box,
@@ -22,6 +23,18 @@ import {
 
 function EditListing() {
   const navigate = useNavigate();
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open } = state;
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+    navigate(-1);
+  };
+
   const params = useParams();
   const [formData, setFormData] = useState({
     about: "",
@@ -81,6 +94,8 @@ function EditListing() {
       .then((response) => {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
       });
+
+    setState({ ...state, open: true });
   };
 
   console.log("editlisting data", formData);
@@ -301,6 +316,20 @@ function EditListing() {
                 >
                   Update
                 </Button>
+
+                <Snackbar
+                  anchorOrigin={{ vertical, horizontal }}
+                  open={open}
+                  onClose={handleClose}
+                  message="Success"
+                  key={vertical + horizontal}
+                  autoHideDuration={1000}
+                  ContentProps={{
+                    sx: {
+                      background: "green",
+                    },
+                  }}
+                />
               </Grid>
             </Box>
           </Paper>
