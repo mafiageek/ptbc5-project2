@@ -26,6 +26,7 @@ export default function MyListings(props) {
 
   const navigate = useNavigate();
 
+
   const handleDelete = async (id) => {
     const docRef = doc(db, "posts", id);
     await deleteDoc(docRef);

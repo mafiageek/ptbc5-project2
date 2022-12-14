@@ -95,7 +95,8 @@ function EditListing() {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
       });
 
-    setState({ ...state, open: true });
+      navigate("/MyListings?success=true" ) 
+
   };
 
   console.log("editlisting data", formData);
