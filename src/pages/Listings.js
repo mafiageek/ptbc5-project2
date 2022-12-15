@@ -28,34 +28,30 @@ export default function Listings(props) {
           </Grid>
           <Grid item>
             <Typography variant="h6" maxWidth="900px" align="center">
-              Have a specific cause or type of project in mind?
+              Looking to volunteer your creative magic for good?
             </Typography>
             <Typography maxWidth="900px" align="center">
-              You can search for projects that are paid, low bono, or pro bono
-              as well as organisation names and skills needed. Get in touch with
-              the non-profits through their contact details in the See Details
-              page if you're interested in their cause!
+              Search for projects that are paid, low bono, or pro bono as well
+              as organisation names and skills needed. Get in touch with the
+              non-profits through their contact details in the See Details page
+              if you're interested in their cause!
             </Typography>
           </Grid>
           <Grid item>
             <Container>
-              <Box bgcolor="#FCEDA5" p={4}>
-                <Grid
-                  maxWidth="900px"
-                  container
-                  spacing={1}
-                  direction="row"
-                  justifyContent="space-between"
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Typography align="center">
-                    Are you a non-profit organisation, community or ground-up
-                    initiative who has a project that needs a little bit of
-                    creative magic? Check out our{" "}
-                    <Link to={"/HowItWorks"}>How it Works</Link> page to find
-                    out how to create a volunteer listing!
-                  </Typography>
+              <Box bgcolor="#FCEDA5" p={2} >
+                <Grid maxWidth="900px" container display="flex" justifyContent="center">
+                  <Grid item>
+                    <Typography variant="h6" maxWidth="900px">
+                      For Non-profits looking for volunteers
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography align="center">
+                      Check out our <Link to={"/HowItWorks"}>How it Works</Link>{" "}
+                      page to find out how to create a volunteer listing!
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Box>
             </Container>
