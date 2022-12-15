@@ -82,7 +82,7 @@ function EditListing() {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
       });
 
-      navigate("/MyListings?success=true" ) 
+    navigate("/MyListings?success=true");
   };
 
   console.log("editlisting data", formData);
