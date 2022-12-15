@@ -28,7 +28,6 @@ export default function ListingModal(props) {
       <Button
         color="primary"
         variant="contained"
-
         onClick={handleOpen}
         {...buttonProps}
       >
@@ -51,8 +50,23 @@ export default function ListingModal(props) {
             <Grid item xs={6}>
               <Stack gap={1}>
                 <Box component="img" height="40" src={props.post.logoURL} />
+                {props.post.remuneration === "Pro Bono" && (
+                  <Chip
+                    sx={{ backgroundColor: "#FFF6CC", color: "#012D48" }}
+                    label={props.post.remuneration}
+                  />
+                )}
+                {props.post.remuneration === "Paid Project" && (
+                  <Chip
+                    sx={{ backgroundColor: "#F6D000", color: "#012D48" }}
+                    label={props.post.remuneration}
+                  />
+                )}
+                {props.post.remuneration === "Low Bono" && (
+                  <Chip color="tertiary" label={props.post.remuneration} />
+                )}
 
-                <Chip color="tertiary" label={props.post.remuneration} sx={{width: 90}}/>
+               
 
                 <Typography variant="h6">Skills Needed</Typography>
 
