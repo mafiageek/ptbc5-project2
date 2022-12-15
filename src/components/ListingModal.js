@@ -28,7 +28,7 @@ export default function ListingModal(props) {
       <Button
         color="primary"
         variant="contained"
-        
+
         onClick={handleOpen}
         {...buttonProps}
       >
@@ -52,7 +52,7 @@ export default function ListingModal(props) {
               <Stack gap={1}>
                 <Box component="img" height="40" src={props.post.logoURL} />
 
-                <Chip color="tertiary" label={props.post.remuneration} />
+                <Chip color="tertiary" label={props.post.remuneration} sx={{width: 90}}/>
 
                 <Typography variant="h6">Skills Needed</Typography>
 

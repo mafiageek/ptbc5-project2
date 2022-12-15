@@ -95,7 +95,21 @@ export default function ListCard(props) {
                   />
 
                   <Stack direction="row" gap={1}>
-                    <Chip color="tertiary" label={post.remuneration} />
+                    {post.remuneration === "Pro Bono" && (
+                      <Chip
+                        sx={{ backgroundColor: "#FFF6CC", color: "#012D48" }}
+                        label={post.remuneration}
+                      />
+                    )}
+                    {post.remuneration === "Paid Project" && (
+                      <Chip
+                        sx={{ backgroundColor: "#F6D000", color: "#012D48" }}
+                        label={post.remuneration}
+                      />
+                    )}
+                    {post.remuneration === "Low Bono" && (
+                      <Chip color="tertiary" label={post.remuneration} />
+                    )}
                   </Stack>
 
                   <Stack direction="row" gap={1}>
@@ -121,7 +135,6 @@ export default function ListCard(props) {
                     sx={{
                       height: 100,
                       textOverflow: "ellipsis",
-                      flexGrow: 1,
                       overflow: "hidden",
                     }}
                   >
@@ -131,9 +144,7 @@ export default function ListCard(props) {
               </CardContent>
 
               <CardActions>
-                <Stack direction="row" spacing={2}>
-                  <ListingModal post={post} />
-                </Stack>
+                <ListingModal post={post} />
               </CardActions>
             </Card>
           </Grid>

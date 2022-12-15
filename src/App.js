@@ -31,7 +31,7 @@ const theme = createTheme({
     },
 
     tertiary: {
-      main: "#FCEDA5",
+      main: "#FFE462",
       contrastText: "#012D48",
     },
 
