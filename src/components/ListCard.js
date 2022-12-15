@@ -75,7 +75,7 @@ export default function ListCard(props) {
       </Box>
       <Grid container spacing={0} sx={{ pl: 2 }}>
         {search(approvePosts).map((post) => (
-          <Grid key={post.id} item xs={12} md={6} lg={3}>
+          <Grid key={post.id} item xs={12} md={6} lg={3} display="flex">
             <Card variant="outlined" sx={{ p: 1, m: 2 }}>
               <CardContent>
                 <Stack spacing={1}>
@@ -107,12 +107,16 @@ export default function ListCard(props) {
                     <Storefront />
                     <Typography>{post.organisationName}</Typography>
                   </Stack>
-
-                  <Typography
-                  // sx={{ maxHeight: 200 }}
+                  <Box
+                    component="div"
+                    sx={{
+                      height: 100,
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
                   >
-                    {post.project}
-                  </Typography>
+                    <Typography>{post.project}</Typography>
+                  </Box>
                 </Stack>
               </CardContent>
 

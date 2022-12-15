@@ -74,7 +74,9 @@ export default function ListingModal(props) {
                 <Typography>{props.post.about}</Typography>
               </Stack>
               <Stack>
-                <Typography variant="h6">Project Details</Typography>
+                <Typography variant="h6">
+                  Project Details
+                </Typography>
                 <Typography>{props.post.project}</Typography>
               </Stack>
             </Stack>
