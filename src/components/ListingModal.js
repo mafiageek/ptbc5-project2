@@ -28,6 +28,7 @@ export default function ListingModal(props) {
       <Button
         color="primary"
         variant="contained"
+        
         onClick={handleOpen}
         {...buttonProps}
       >

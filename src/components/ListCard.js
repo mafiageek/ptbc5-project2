@@ -12,9 +12,11 @@ import {
   Grid,
   TextField,
   Box,
+  InputAdornment,
 } from "@mui/material";
 
 import { BusinessCenter, CalendarMonth, Storefront } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
 import ListingModal from "./ListingModal";
 
 export default function ListCard(props) {
@@ -57,7 +59,7 @@ export default function ListCard(props) {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { p: 0, m: 3, width: "40ch" },
+          "& > :not(style)": { p: 0, m: 3, width: "900px" },
           display: "flex",
           justifyContent: "center",
           backgroundColor: "#fc8c03",
@@ -68,7 +70,14 @@ export default function ListCard(props) {
         <TextField
           sx={{ backgroundColor: "white", border: 0 }}
           id="search"
-          label="search"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          label=""
           variant="outlined"
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
         />
