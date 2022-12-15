@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
 import {
   Box,
@@ -22,6 +23,18 @@ import {
 
 function EditListing() {
   const navigate = useNavigate();
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open } = state;
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+    navigate(-1);
+  };
+
   const params = useParams();
   const [formData, setFormData] = useState({
     about: "",
@@ -70,19 +83,20 @@ function EditListing() {
 
     axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`,
+        `https://developers.onemap.sg/commonapi/search?searchVal=${formData.location}&returnGeom=Y&getAddrDetails=Y`
       )
       .then((response) => response.data.results[0])
       .then((geoData) =>
         axios.get(
-          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`,
-        ),
+          `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${geoData.LATITUDE}&lng=${geoData.LONGITUDE}&postal=${formData.location}&zoom=15&width=512&height=256&points=[${geoData.LATITUDE},${geoData.LONGITUDE}]`
+        )
       )
       .then((response) => {
         updateDoc(docRef, { ...formData, mapURL: response.config.url });
       });
 
-    navigate("/MyListings?success=true");
+      navigate("/MyListings?success=true" ) 
+
   };
 
   console.log("editlisting data", formData);
@@ -183,6 +197,7 @@ function EditListing() {
                     // defaultValue="Enter Name"
                     size="Normal"
                     variant="outlined"
+                    InputLabelProps={{ shrink: true }}
                   />
                   <TextField
                     label="Skills Needed"
@@ -302,6 +317,20 @@ function EditListing() {
                 >
                   Update
                 </Button>
+
+                <Snackbar
+                  anchorOrigin={{ vertical, horizontal }}
+                  open={open}
+                  onClose={handleClose}
+                  message="Success"
+                  key={vertical + horizontal}
+                  autoHideDuration={1000}
+                  ContentProps={{
+                    sx: {
+                      background: "green",
+                    },
+                  }}
+                />
               </Grid>
             </Box>
           </Paper>

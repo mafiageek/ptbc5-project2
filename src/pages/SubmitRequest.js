@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -17,6 +16,7 @@ import {
   TextField,
   Typography,
   Stack,
+  Snackbar,
 } from "@mui/material";
 import React from "react";
 import { db, storage } from "../firebase";
@@ -28,6 +28,18 @@ import {
 import { Container } from "@mui/system";
 
 function SubmitRequest(props) {
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open } = state;
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+    navigate(-1);
+  };
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [formData, setFormData] = useState({
     about: "",
@@ -75,7 +87,7 @@ function SubmitRequest(props) {
     receiver2,
     subject,
     sender,
-    message,
+    message
   ) => {
     const TEMPLATE = {
       personalizations: [
@@ -104,7 +116,7 @@ function SubmitRequest(props) {
         receiver2,
         `A new request from ${props.user.displayName}`,
         "no-reply@mail.com",
-        "Review",
+        "Review"
       ),
     };
 
@@ -117,7 +129,7 @@ function SubmitRequest(props) {
   const getGeoData = async (location) => {
     await axios
       .get(
-        `https://developers.onemap.sg/commonapi/search?searchVal=${location}&returnGeom=Y&getAddrDetails=Y`,
+        `https://developers.onemap.sg/commonapi/search?searchVal=${location}&returnGeom=Y&getAddrDetails=Y`
       )
       .then((response) => response.data.results[0])
       .then((response) => {
@@ -134,7 +146,7 @@ function SubmitRequest(props) {
   const getMapURL = async (lat, lng, location) => {
     await axios
       .get(
-        `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${lat}&lng=${lng}&postal=${location}&zoom=15&width=512&height=256&points=[${lat},${lng}]`,
+        `https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=${lat}&lng=${lng}&postal=${location}&zoom=15&width=512&height=256&points=[${lat},${lng}]`
       )
       .then((response) => {
         setFormData((prevFormData) => ({
@@ -176,7 +188,7 @@ function SubmitRequest(props) {
     });
 
     emailNotify("anton.kho@gmail.com", "weimankow@gmail.com");
-    navigate("/MyListings");
+    setState({ ...state, open: true });
   };
 
   return (
@@ -414,6 +426,19 @@ function SubmitRequest(props) {
                 >
                   Submit
                 </Button>
+                <Snackbar
+                  anchorOrigin={{ vertical, horizontal }}
+                  open={open}
+                  onClose={handleClose}
+                  message="Success"
+                  key={vertical + horizontal}
+                  autoHideDuration={1000}
+                  ContentProps={{
+                    sx: {
+                      background: "green",
+                    },
+                  }}
+                />
               </Grid>
             </Box>
           </Paper>
