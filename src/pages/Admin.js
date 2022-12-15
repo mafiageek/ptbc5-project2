@@ -165,10 +165,9 @@ export default function Admin(props) {
 
       <Container>
         <Stack spacing={2}>
-  
-            <Typography variant="h4">
-              My Dashboard ({props.user?.displayName})
-            </Typography>
+          <Typography variant="h4">
+            My Dashboard ({props.user?.displayName})
+          </Typography>
           <Typography variant="h6">Listings to Approve</Typography>
           <TableContainer component={Paper}>
             <Table>
@@ -196,7 +195,7 @@ export default function Admin(props) {
                     <TableCell>{post.email}</TableCell>
                     <TableCell>{post.dueDate}</TableCell>
                     <TableCell>{post.remuneration}</TableCell>
-                    <TableCell>
+                    <TableCell style={{ width: 120 }}>
                       <ListingModal post={post} />
                     </TableCell>
                     <TableCell>
@@ -261,7 +260,7 @@ export default function Admin(props) {
                     <TableCell>{post.email}</TableCell>
                     <TableCell>{post.dueDate}</TableCell>
                     <TableCell>{post.remuneration}</TableCell>
-                    <TableCell>
+                    <TableCell style={{ width: 120 }}>
                       <ListingModal post={post} />
                     </TableCell>
                     <TableCell>

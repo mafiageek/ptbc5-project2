@@ -125,7 +125,7 @@ export default function MyListings(props) {
                     <TableCell>
                       {post.isDisplay ? "Listed" : "Pending Approval"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell style={{ width: 120 }}>
                       <ListingModal post={post} />
                     </TableCell>
                     <TableCell>

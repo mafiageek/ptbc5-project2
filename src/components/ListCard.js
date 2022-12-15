@@ -12,9 +12,11 @@ import {
   Grid,
   TextField,
   Box,
+  InputAdornment,
 } from "@mui/material";
 
 import { BusinessCenter, CalendarMonth, Storefront } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
 import ListingModal from "./ListingModal";
 
 export default function ListCard(props) {
@@ -57,7 +59,7 @@ export default function ListCard(props) {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { p: 0, m: 3, width: "40ch" },
+          "& > :not(style)": { p: 0, m: 3, width: "900px" },
           display: "flex",
           justifyContent: "center",
           backgroundColor: "#fc8c03",
@@ -68,14 +70,21 @@ export default function ListCard(props) {
         <TextField
           sx={{ backgroundColor: "white", border: 0 }}
           id="search"
-          label="search"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          label=""
           variant="outlined"
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
         />
       </Box>
       <Grid container spacing={0} sx={{ pl: 2 }}>
         {search(approvePosts).map((post) => (
-          <Grid key={post.id} item xs={12} md={6} lg={3}>
+          <Grid key={post.id} item xs={12} md={6} lg={3} display="flex">
             <Card variant="outlined" sx={{ p: 1, m: 2 }}>
               <CardContent>
                 <Stack spacing={1}>
@@ -86,7 +95,21 @@ export default function ListCard(props) {
                   />
 
                   <Stack direction="row" gap={1}>
-                    <Chip label={post.remuneration} />
+                    {post.remuneration === "Pro Bono" && (
+                      <Chip
+                        sx={{ backgroundColor: "#FFF6CC", color: "#012D48" }}
+                        label={post.remuneration}
+                      />
+                    )}
+                    {post.remuneration === "Paid Project" && (
+                      <Chip
+                        sx={{ backgroundColor: "#F6D000", color: "#012D48" }}
+                        label={post.remuneration}
+                      />
+                    )}
+                    {post.remuneration === "Low Bono" && (
+                      <Chip color="tertiary" label={post.remuneration} />
+                    )}
                   </Stack>
 
                   <Stack direction="row" gap={1}>
@@ -107,19 +130,21 @@ export default function ListCard(props) {
                     <Storefront />
                     <Typography>{post.organisationName}</Typography>
                   </Stack>
-
-                  <Typography
-                  // sx={{ maxHeight: 200 }}
+                  <Box
+                    component="div"
+                    sx={{
+                      height: 100,
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
                   >
-                    {post.project}
-                  </Typography>
+                    <Typography>{post.project}</Typography>
+                  </Box>
                 </Stack>
               </CardContent>
 
               <CardActions>
-                <Stack direction="row" spacing={2}>
-                  <ListingModal post={post} />
-                </Stack>
+                <ListingModal post={post} />
               </CardActions>
             </Card>
           </Grid>
