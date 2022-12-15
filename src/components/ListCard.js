@@ -86,7 +86,7 @@ export default function ListCard(props) {
                   />
 
                   <Stack direction="row" gap={1}>
-                    <Chip label={post.remuneration} />
+                    <Chip color="tertiary" label={post.remuneration} />
                   </Stack>
 
                   <Stack direction="row" gap={1}>
@@ -112,6 +112,7 @@ export default function ListCard(props) {
                     sx={{
                       height: 100,
                       textOverflow: "ellipsis",
+                      flexGrow: 1,
                       overflow: "hidden",
                     }}
                   >
